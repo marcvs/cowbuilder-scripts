@@ -1,5 +1,9 @@
 #!/bin/bash
 
+[ -z $1 ] && {
+    echo "The version of oidc-agent must be the only parameter. Ex: 2.0.3"
+    exit 1
+}
 VERSION=$1
 
 BASE="/var/cache/pbuilder/"
