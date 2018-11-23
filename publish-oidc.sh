@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 [ -z $1 ] && {
     echo "The version of oidc-agent must be the only parameter. Ex: 2.0.3"
     exit 1
