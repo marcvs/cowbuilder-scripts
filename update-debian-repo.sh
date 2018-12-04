@@ -6,8 +6,10 @@
 REMOTE=root@repo.data.kit.edu
 R_BASE=/var/www/
 TMP=`mktemp -d`
+MD_INPUT_FILE=$(cd "`dirname $0`" 2>/dev/null && pwd)/`basename $0`
+
 #echo "TMP: $TMP"
-TMP="/var/cache/debian-repo"
+#TMP="/var/cache/debian-repo"
 
 DISTROS="debian/buster debian/stretch ubuntu/bionic ubuntu/xenial"
 DEB_REPO="$TMP/debian"
@@ -17,16 +19,11 @@ export KEYNAME="ACDFB08FDC962044D87FF00B512839863D487A87"
 
 cd $TMP
 
-# Sync remote repo here:
-echo -n "Sync from remote..... "
-rsync -rlutopgx $REMOTE:$R_BASE/ .
-echo "done"
-
-# Generate repo files
-echo -n "Generate repo files.. "
+# Generate repo files remotely
+echo -n "Generate repo files remotely "
 for d in $DISTROS ; do 
-    pushd ./ > /dev/null
-        cd $d
+    ssh $REMOTE "
+        cd $R_BASE/$d
 
         #-- build Packages file
         apt-ftparchive packages . > Packages
@@ -34,25 +31,36 @@ for d in $DISTROS ; do
 
         #-- signed Release file
         apt-ftparchive release . > Release
-        gpg --yes -abs -u $KEYNAME -o Release.gpg Release
-    popd > /dev/null
+
+        test -e Release.gpg && rm Release.gpg
+        #gpg --yes -abs -u $KEYNAME -o Release.gpg Release
+        "
+done
+echo "done"
+# Sync remote repo here:
+echo -n "Sign Release files "
+for d in $DISTROS ; do 
+    echo -n "$d "
+    mkdir -p $TMP/$d
+    scp $REMOTE:$R_BASE/$d/Release $TMP/$d  > /dev/null || echo "error with ssh"
+    gpg --yes -abs -u $KEYNAME -o $d/Release.gpg $d/Release
+    scp $TMP/$d/Release.gpg $REMOTE:$R_BASE/$d/ > /dev/null || echo "error with ssh"
+
 done
 echo "done"
 
-# Ensure symlinks are in place
-    cd $DEB_REPO
-    test -e testing || ln -s buster/ testing
-    test -e stable  || ln -s stretch/ stable
-
-    cd $UBU_REPO
-    test -e 18.04   ||ln -s bionic/ 18.04
-    test -e 16.04   ||ln -s xenial/ 16.04
+## Ensure symlinks are in place
+#    cd $DEB_REPO
+#    test -e testing || ln -s buster/ testing
+#    test -e stable  || ln -s stretch/ stable
+#
+#    cd $UBU_REPO
+#    test -e 18.04   ||ln -s bionic/ 18.04
+#    test -e 16.04   ||ln -s xenial/ 16.04
 
 # Generate index.html
-~/bin/md2html.sh $0.md > `dirname $DEB_REPO`/index.html
+~/bin/md2html.sh $MD_INPUT_FILE.md > $TMP/index.html
+scp $TMP/index.html $REMOTE:/$R_BASE/ > /dev/null || echo "error with ssh"
 
-# sync back
-cd $TMP
-echo -n "Sync back to remote.. "
-rsync -rlutopgx --delete . $REMOTE:$R_BASE/ 
-echo "done"
+# Cleanup tmp
+rm -rf $TMP
