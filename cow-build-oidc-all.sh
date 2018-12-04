@@ -1,14 +1,19 @@
 #!/bin/bash
 #
 #FILE=oidc-agent_2.0.1.dsc
-FILE=$1
+#FILE_23="${1}_libsodium23"
+#FILE_18="${1}_libsodium18"
+VERSION=$1
+OIDC_AGENT_DIR="${HOME}/oidc-agent-deb/oidc-agent"
+(cd $OIDC_AGENT_DIR && debuild -uc -us)
+FILE="${OIDC_AGENT_DIR}/../oidc-agent_${VERSION}.dsc"
 
 sudo ls -l $FILE
 
 DIST=stretch
 (
 echo "Building for $DIST..."
-sudo                  HOME=$HOME DIST=$DIST cowbuilder --build $FILE > buildlog-$DIST.log 2>&1
+sudo DEPS=oidc-agent  HOME=$HOME DIST=$DIST cowbuilder --build $FILE > buildlog-$DIST.log 2>&1
 echo "   $DIST: $?"
 )&
 
