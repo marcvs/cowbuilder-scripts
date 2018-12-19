@@ -3,6 +3,10 @@
 #FILE=oidc-agent_2.0.1.dsc
 #FILE_23="${1}_libsodium23"
 #FILE_18="${1}_libsodium18"
+[ -z $1 ] && {
+    echo "The version of oidc-agent must be the only parameter. Ex: 2.0.3"
+    exit 1
+}
 VERSION=$1
 OIDC_AGENT_DIR="${HOME}/oidc-agent-deb/oidc-agent"
 (cd $OIDC_AGENT_DIR && debuild -uc -us)
