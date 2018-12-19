@@ -14,7 +14,7 @@ MD_INPUT_FILE=$(cd "`dirname $0`" 2>/dev/null && pwd)/`basename $0`
 DISTROS="debian/buster debian/stretch ubuntu/bionic ubuntu/xenial"
 DEB_REPO="$TMP/debian"
 UBU_REPO="$TMP/ubuntu"
-export GNUPGHOME=/home/marcus/.gnupg
+export GNUPGHOME=$HOME/.gnupg
 export KEYNAME="ACDFB08FDC962044D87FF00B512839863D487A87"
 
 cd $TMP
@@ -59,8 +59,10 @@ echo "done"
 #    test -e 16.04   ||ln -s xenial/ 16.04
 
 # Generate index.html
-~/bin/md2html.sh $MD_INPUT_FILE.md > $TMP/index.html
-scp $TMP/index.html $REMOTE:/$R_BASE/ > /dev/null || echo "error with ssh"
+[ -e ~/bin/md2html.sh ] && {
+    ~/bin/md2html.sh $MD_INPUT_FILE.md > $TMP/index.html
+    scp $TMP/index.html $REMOTE:/$R_BASE/ > /dev/null || echo "error with ssh"
+}
 
 # Cleanup tmp
 rm -rf $TMP

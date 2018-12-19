@@ -10,7 +10,7 @@
 VERSION=$1
 OIDC_AGENT_DIR="${HOME}/oidc-agent-deb/oidc-agent"
 (cd $OIDC_AGENT_DIR && debuild -uc -us)
-FILE="${OIDC_AGENT_DIR}/../oidc-agent_${VERSION}.dsc"
+FILE="oidc-agent_${VERSION}.dsc"
 
 sudo ls -l $FILE
 
