@@ -5,7 +5,7 @@ This repository provides debian packages for ubuntu and debian.
 To use it, you need to import the signing key:
 
 `
-sudo apt-key adv --keyserver hkp://hkps.pool.sks-keyservers.net --recv-keys ACDFB08FDC962044D87FF00B512839863D487A87`
+sudo apt-key adv --keyserver hkp://pgp.surfnet.nl --recv-keys ACDFB08FDC962044D87FF00B512839863D487A87`
 
 And add one of the supported repos to your `/etc/apt/sources.list`:
 
