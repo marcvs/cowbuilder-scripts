@@ -39,6 +39,13 @@ sudo                  HOME=$HOME DIST=$DIST cowbuilder --build $FILE > buildlog-
 echo "   $DIST: $?"
 )&
 
+DIST=bullseye
+(
+echo "Building for $DIST..."
+sudo                  HOME=$HOME DIST=$DIST cowbuilder --build $FILE > buildlog-$DIST.log 2>&1
+echo "   $DIST: $?"
+)&
+
 DIST=xenial
 (
 echo "Building for $DIST..."

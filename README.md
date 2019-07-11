@@ -23,7 +23,7 @@ scp /usr/share/debootstrap/scripts/bionic root@repo.data.kit.edu://usr/share/deb
 - the keyring for bionic is a little strange to obtain
 
 ## Automagically install build environments
-- currently supported: stretch, buster, xenial, bionic
+- currently supported: stretch, buster, bullseye, xenial, bionic
 ```
 cow-create-all.sh
 ```

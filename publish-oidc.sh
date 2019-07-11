@@ -22,7 +22,7 @@ PACKAGES_DBG="
     oidc-agent-dbgsym_${VERSION}_amd64.deb \
     liboidc-agent3-dbgsym_${VERSION}_amd64.deb "
 
-DEB_DISTROS="buster stretch "
+DEB_DISTROS="bullseye buster stretch "
 UBU_DISTROS="bionic xenial"
 #DEB_REPO=/var/cache/debian-repo/debian
 #UBU_REPO=/var/cache/debian-repo/ubuntu

@@ -11,7 +11,7 @@ MD_INPUT_FILE=$(cd "`dirname $0`" 2>/dev/null && pwd)/`basename $0`
 #echo "TMP: $TMP"
 #TMP="/var/cache/debian-repo"
 
-DISTROS="debian/buster debian/stretch ubuntu/bionic ubuntu/xenial"
+DISTROS="debian/bullseye debian/buster debian/stretch ubuntu/bionic ubuntu/xenial"
 DEB_REPO="$TMP/debian"
 UBU_REPO="$TMP/ubuntu"
 export GNUPGHOME=$HOME/.gnupg
