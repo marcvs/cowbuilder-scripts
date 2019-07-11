@@ -7,7 +7,13 @@ REMOTE=root@repo.data.kit.edu
 R_BASE=/var/www/
 TMP=`mktemp -d`
 MD_INPUT_FILE=$(cd "`dirname $0`" 2>/dev/null && pwd)/`basename $0`
-
+# Generate index.html
+echo "md input: $MD_INPUT_FILE"
+[ -e ~/bin/md2html.sh ] && {
+    ~/bin/md2html.sh $MD_INPUT_FILE.md > $TMP/md2html.log 2>&1
+    cat /tmp/md.html > $TMP/index.html
+    scp $TMP/index.html $REMOTE:/$R_BASE/ > /dev/null || echo "error with ssh"
+}
 #echo "TMP: $TMP"
 #TMP="/var/cache/debian-repo"
 
@@ -58,11 +64,6 @@ echo "done"
 #    test -e 18.04   ||ln -s bionic/ 18.04
 #    test -e 16.04   ||ln -s xenial/ 16.04
 
-# Generate index.html
-[ -e ~/bin/md2html.sh ] && {
-    ~/bin/md2html.sh $MD_INPUT_FILE.md > $TMP/index.html
-    scp $TMP/index.html $REMOTE:/$R_BASE/ > /dev/null || echo "error with ssh"
-}
 
 # Cleanup tmp
 rm -rf $TMP
