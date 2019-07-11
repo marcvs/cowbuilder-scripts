@@ -8,7 +8,6 @@ R_BASE=/var/www/
 TMP=`mktemp -d`
 MD_INPUT_FILE=$(cd "`dirname $0`" 2>/dev/null && pwd)/`basename $0`
 # Generate index.html
-echo "md input: $MD_INPUT_FILE"
 [ -e ~/bin/md2html.sh ] && {
     ~/bin/md2html.sh $MD_INPUT_FILE.md > $TMP/md2html.log 2>&1
     cat /tmp/md.html > $TMP/index.html
