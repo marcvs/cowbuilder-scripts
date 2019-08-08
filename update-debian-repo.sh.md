@@ -15,7 +15,7 @@ And add one of the supported repos to your `/etc/apt/sources.list`:
 
 - [Debian/stable](/debian/stable): 
     - `deb http://repo.data.kit.edu/debian/stable ./`
-    - or: `deb http://repo.data.kit.edu/debian/buster./`
+    - or: `deb http://repo.data.kit.edu/debian/buster ./`
 - [Debian/oldstable](/debian/oldstable): 
     - `deb http://repo.data.kit.edu/debian/oldstable ./`
     - or: `deb http://repo.data.kit.edu/debian/stretch ./`
