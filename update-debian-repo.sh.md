@@ -8,6 +8,9 @@ To use it, you need to import the signing key:
 or
 ` curl repo.data.kit.edu/key.pgp | apt-key add -`
 
+Please note that the first command fails in a time-out from time to time.
+In that case just use the second one.
+
 And add one of the supported repos to your `/etc/apt/sources.list`:
 
 - [Debian/testing](/debian/testing):
