@@ -3,19 +3,19 @@
 BASE=/var/cache/pbuilder/
 # DEBIAN
 export DIST=bullseye
-sudo mkdir $BASE/$DIST-amd64
+sudo mkdir -p $BASE/$DIST-amd64/aptcache
 sudo HOME=$HOME DIST=$DIST cowbuilder --create \
     --basepath /var/cache/pbuilder/${DIST}-amd64/base.cow/ \
     --distribution $DIST
 
 export DIST=buster
-sudo mkdir $BASE/$DIST-amd64
+sudo mkdir -p $BASE/$DIST-amd64/aptcache
 sudo HOME=$HOME DIST=$DIST cowbuilder --create \
     --basepath /var/cache/pbuilder/${DIST}-amd64/base.cow/ \
     --distribution $DIST
 
 export DIST=stretch
-sudo mkdir $BASE/$DIST-amd64
+sudo mkdir -p $BASE/$DIST-amd64/aptcache
 sudo HOME=$HOME DIST=$DIST cowbuilder --create \
     --basepath /var/cache/pbuilder/${DIST}-amd64/base.cow/ \
     --distribution $DIST
@@ -28,7 +28,7 @@ wget http://archive.ubuntu.com/ubuntu/project/ubuntu-archive-keyring.gpg
 sudo mv ubuntu-archive-keyring.gpg /usr/share/keyrings/
 
 export DIST=bionic
-sudo mkdir $BASE/$DIST-amd64
+sudo mkdir -p $BASE/$DIST-amd64/aptcache
 sudo HOME=$HOME DIST=$DIST cowbuilder --create \
     --basepath /var/cache/pbuilder/${DIST}-amd64/base.cow/ \
     --distribution $DIST \
@@ -37,7 +37,7 @@ sudo HOME=$HOME DIST=$DIST cowbuilder --create \
     --debootstrapopts --keyring=/usr/share/keyrings/ubuntu-archive-keyring-from-nemo.gpg
 
 export DIST=xenial
-sudo mkdir $BASE/$DIST-amd64
+sudo mkdir -p $BASE/$DIST-amd64/aptcache
 sudo HOME=$HOME DIST=$DIST cowbuilder --create \
     --basepath /var/cache/pbuilder/${DIST}-amd64/base.cow/ \
     --distribution $DIST \
