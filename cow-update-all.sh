@@ -2,7 +2,7 @@
 LOGS=$HOME/logs
 
 export DIST=stretch
-sudo                  HOME=$HOME  DIST=$DIST cowbuilder --update > $LOGS/${DIST}_update.log
+sudo DEPS=oidc-agent  HOME=$HOME  DIST=$DIST cowbuilder --update > $LOGS/${DIST}_update.log
 export DIST=buster
 sudo                  HOME=$HOME  DIST=$DIST cowbuilder --update > $LOGS/${DIST}_update.log
 export DIST=bullseye
