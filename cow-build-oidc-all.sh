@@ -3,25 +3,52 @@
 LOGS=$HOME/logs
 DEB_SRC_LOG=$LOGS/oidc-agent-deb-src.log
 OIDC_AGENT_DIR="${HOME}/oidc-agent-deb/oidc-agent"
+BRANCH="master"
+VERSION=""
+# FIXME: DEBIAN_RELEASE is hardcoded for now
+DEBIAN_RELEASE="1"
 
-[ -z $1 ] && {
-    echo "The version of oidc-agent must be the only parameter. Ex: 2.0.3"
-    exit 1
+usage(){
+    echo "-v, --version  <version>"
+    echo "-b, --branch <branch>"
+    exit 0
 }
-VERSION=$1
+while [ $# -gt 0 ]; do
+    case "$1" in
+    -h|--help)          usage        exit 0                ;;
+    -v|--version)       VERSION=${2} ;               shift ;;
+    -b|--branch)        BRANCH=${2} ;               shift ;;
+    *)                  usage ;; 
+    esac
+    shift
+done
 
-echo "Building oidc-agent version $VERSION using $OIDC_AGENT_DIR"
 echo "logs go to $DEB_SRC_LOG"
 
 cd $OIDC_AGENT_DIR 
 echo "Pulling changes"
 pushd ./ > /dev/null
 git pull
-debuild -uc -us > $DEB_SRC_LOG
+git co $BRANCH
+
+[ -z ${VERSION} ] && {
+    VERSION=`cat VERSION`
+    echo "Autosetting Version to $VERSION"
+    #echo "The version of oidc-agent must be specifiec Ex: -v 2.0.3"
+    #exit 1
+}
+
+echo -e "\nBuilding oidc-agent version $VERSION-$DEBIAN_RELEASE from branch "${BRANCH}" using $OIDC_AGENT_DIR\n"
+
+echo "git stage done; now going to debuild"
+
+# create debian source package:
+make debsource > $DEB_SRC_LOG 2>&1
+#debuild -uc -us > $DEB_SRC_LOG
 cd ..
 
-FILE="oidc-agent_${VERSION}.dsc"
-sudo ls -l $FILE || {
+FILE="oidc-agent_${VERSION}-${DEBIAN_RELEASE}.dsc"
+sudo ls -l $FILE > /dev/null || {
     echo ".dsc file not found. I was expecting: $FILE"
     exit 1
 }
@@ -61,4 +88,5 @@ sudo                  HOME=$HOME DIST=$DIST cowbuilder --build $FILE > $LOGS/bui
 echo "   $DIST: $?"
 )&
 
+wait
 popd > /dev/null
