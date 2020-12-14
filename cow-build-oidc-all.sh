@@ -26,8 +26,8 @@ echo "logs go to $DEB_SRC_LOG"
 cd $OIDC_AGENT_DIR 
 echo "Pulling changes"
 pushd ./ > /dev/null
-git pull
 git co $BRANCH
+git pull
 
 [ -z ${VERSION} ] || {
     [ -z ${DEBIAN_RELEASE} ] && {
