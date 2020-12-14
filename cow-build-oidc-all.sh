@@ -5,8 +5,6 @@ DEB_SRC_LOG=$LOGS/oidc-agent-deb-src.log
 OIDC_AGENT_DIR="${HOME}/oidc-agent-deb/oidc-agent"
 BRANCH="master"
 VERSION=""
-# FIXME: DEBIAN_RELEASE is hardcoded for now
-DEBIAN_RELEASE="1"
 
 usage(){
     echo "-v, --version  <version>"
@@ -31,14 +29,26 @@ pushd ./ > /dev/null
 git pull
 git co $BRANCH
 
+[ -z ${VERSION} ] || {
+    [ -z ${DEBIAN_RELEASE} ] && {
+        DEBIAN_RELEASE=1
+    }
+    FILE="oidc-agent_${VERSION}-${DEBIAN_RELEASE}.dsc"
+    VERSION_DEBREL_FROM_BRANCH="$VERSION-$DEBIAN_RELEASE"
+}
 [ -z ${VERSION} ] && {
-    VERSION=`cat VERSION`
-    echo "Autosetting Version to $VERSION"
+    VERSION_DEBREL_FROM_BRANCH=`head -n 1 debian/changelog | awk -F\) '{ print $1 }' | awk -F\( '{ print $2 }'`
+    # VERSION=`cat VERSION`
+    echo "Autosetting Version to $VERSION (using debian/changelog)"
     #echo "The version of oidc-agent must be specifiec Ex: -v 2.0.3"
     #exit 1
+    FILE=`head -n 1 debian/changelog | awk -F\) '{ print $1 }' |sed s/\ \(/_/`".dsc"
+    VERSION_DEBREL=$VERSION_DEBREL_FROM_BRANCH
 }
 
-echo -e "\nBuilding oidc-agent version $VERSION-$DEBIAN_RELEASE from branch "${BRANCH}" using $OIDC_AGENT_DIR\n"
+
+# echo -e "\nBuilding oidc-agent version $VERSION-$DEBIAN_RELEASE from branch "${BRANCH}" using $OIDC_AGENT_DIR\n"
+echo -e "\nBuilding oidc-agent version $VERSION_DEBREL from branch "${BRANCH}" using $OIDC_AGENT_DIR\n"
 
 echo "git stage done; now going to debuild"
 
@@ -46,8 +56,6 @@ echo "git stage done; now going to debuild"
 make debsource > $DEB_SRC_LOG 2>&1
 #debuild -uc -us > $DEB_SRC_LOG
 cd ..
-
-FILE="oidc-agent_${VERSION}-${DEBIAN_RELEASE}.dsc"
 sudo ls -l $FILE > /dev/null || {
     echo ".dsc file not found. I was expecting: $FILE"
     exit 1
