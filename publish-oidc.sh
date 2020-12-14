@@ -11,16 +11,20 @@ VERSION=$1
 BASE="/var/cache/pbuilder/"
 GITHUB="/home/build/github"
 OIDC_AGENT=oidc-agent_${VERSION}_amd64.deb
-LIBOIDC_AGENT=liboidc-agent3_${VERSION}_amd64.deb
+LIBOIDC_AGENT=liboidc-agent4_${VERSION}_amd64.deb
 LIBOIDC_AGENTDEV=liboidc-agent-dev_${VERSION}_amd64.deb
+OIDC_PROMPT=oidc-agent-prompt_${VERSION}_all.deb
+OIDC_AGENT_SERVER=oidc-agent-server_${VERSION}_amd64.deb
 PACKAGES="$OIDC_AGENT \
     oidc-agent_${VERSION}.dsc \
-    oidc-agent_${VERSION}.tar.xz \
+    oidc-agent_${VERSION}.debian.tar.xz \
+    $OIDC_PROMPT \
+    $OIDC_AGENT_SERVER \
     $LIBOIDC_AGENT \
     $LIBOIDC_AGENTDEV "
 PACKAGES_DBG="
     oidc-agent-dbgsym_${VERSION}_amd64.deb \
-    liboidc-agent3-dbgsym_${VERSION}_amd64.deb "
+    liboidc-agent4-dbgsym_${VERSION}_amd64.deb "
 
 DEB_DISTROS="bullseye buster stretch "
 UBU_DISTROS="bionic xenial"
