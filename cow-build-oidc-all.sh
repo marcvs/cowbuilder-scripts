@@ -61,12 +61,12 @@ sudo ls -l $FILE > /dev/null || {
     exit 1
 }
 
-DIST=stretch
-(
-echo "Building for $DIST..."
-sudo DEPS=oidc-agent  HOME=$HOME DIST=$DIST cowbuilder --build $FILE > $LOGS/buildlog-$DIST.log 2>&1
-echo "   $DIST: $?"
-)&
+# DIST=stretch
+# (
+# echo "Building for $DIST..."
+# sudo DEPS=oidc-agent  HOME=$HOME DIST=$DIST cowbuilder --build $FILE > $LOGS/buildlog-$DIST.log 2>&1
+# echo "   $DIST: $?"
+# )&
 
 DIST=buster
 (
