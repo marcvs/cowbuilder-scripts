@@ -71,7 +71,7 @@ echo "   $DIST: $?"
 DIST=buster
 (
 echo "Building for $DIST..."
-sudo                  HOME=$HOME DIST=$DIST cowbuilder --build $FILE > $LOGS/buildlog-$DIST.log 2>&1
+sudo DEPS=oidc-agent  HOME=$HOME DIST=$DIST cowbuilder --build $FILE > $LOGS/buildlog-$DIST.log 2>&1
 echo "   $DIST: $?"
 )&
 
