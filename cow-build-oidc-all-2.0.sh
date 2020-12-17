@@ -9,9 +9,7 @@ BRANCH="master"
 BUILDTMP="${HOME}/buildtemp"
 
 # DISTS="buster bullseye bionic focal xenial stretch"
-DISTS="buster bullseye bionic focal xenial"
-# DISTS="buster bullseye stretch"
-# DISTS="stretch"
+DISTS="buster bullseye bionic focal"
 
 usage(){
     echo "-b, --branch <branch>"
