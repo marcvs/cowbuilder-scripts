@@ -1,10 +1,11 @@
 #!/bin/bash
 #
-LOGS=$HOME/logs
-DEB_SRC_LOG=$LOGS/oidc-agent-deb-src.log
+LOGS="${HOME}/logs"
+DEB_SRC_LOG="${LOGS}/oidc-agent-deb-src.log"
 OIDC_AGENT_DIR="${HOME}/oidc-agent-deb/oidc-agent"
 BRANCH="master"
 VERSION=""
+BUILDTMP="${HOME}/buildtemp"
 
 usage(){
     echo "-v, --version  <version>"
@@ -53,7 +54,14 @@ echo -e "\nBuilding oidc-agent version $VERSION_DEBREL from branch "${BRANCH}" u
 echo "git stage done; now going to debuild"
 
 # create debian source package:
-make debsource > $DEB_SRC_LOG 2>&1
+case "${DIST}" in
+    bionic)
+        make ubuntu-bionic-source> $DEB_SRC_LOG 2>&1
+    ;;
+    *)
+        make debsource > $DEB_SRC_LOG 2>&1
+    ;;
+esac
 #debuild -uc -us > $DEB_SRC_LOG
 cd ..
 sudo ls -l $FILE > /dev/null || {
@@ -82,6 +90,8 @@ sudo                  HOME=$HOME DIST=$DIST cowbuilder --build $FILE > $LOGS/bui
 echo "   $DIST: $?"
 )&
 
+
+
 DIST=xenial
 (
 echo "Building for $DIST..."
@@ -92,7 +102,14 @@ echo "   $DIST: $?"
 DIST=bionic
 (
 echo "Building for $DIST..."
-sudo                  HOME=$HOME DIST=$DIST cowbuilder --build $FILE > $LOGS/buildlog-$DIST.log 2>&1
+sudo DEPS=oidc-agent  HOME=$HOME DIST=$DIST cowbuilder --build $FILE > $LOGS/buildlog-$DIST.log 2>&1
+echo "   $DIST: $?"
+)&
+
+DIST=focal
+(
+echo "Building for $DIST..."
+sudo DEPS=oidc-agent  HOME=$HOME DIST=$DIST cowbuilder --build $FILE > $LOGS/buildlog-$DIST.log 2>&1
 echo "   $DIST: $?"
 )&
 
