@@ -1,0 +1,64 @@
+# vim:ft=sh
+set -e
+
+set -x
+
+case ${DIST} in
+    "focal")
+        grep -Fxq "focal-backports" /etc/apt/sources.list || {
+            echo "deb http://archive.ubuntu.com/ubuntu focal-backports main restricted universe multiverse " >> /etc/apt/sources.list
+            apt-get -y install ubuntu-keyring
+            apt-get install -y gpg dirmngr gpg-agent
+
+            apt-key adv --keyserver   keyserver.ubuntu.com --recv-keys 04EE7237B7D453EC
+            apt-key adv --keyserver   keyserver.ubuntu.com --recv-keys 648ACFD622F3D138
+            apt-get update
+        }
+    ;;
+    "bionic")
+        grep -Fxq "bionic-backports" /etc/apt/sources.list || {
+            echo "deb http://archive.ubuntu.com/ubuntu bionic-backports main restricted universe multiverse " >> /etc/apt/sources.list
+            echo "deb http://archive.ubuntu.com/ubuntu focal-backports main restricted universe multiverse " >> /etc/apt/sources.list
+            cat > "/etc/apt/preferences" << EOF
+Package: debhelper
+Pin: release a=bionic-backports
+Pin-Priority: 999
+
+Package: lintian
+Pin: release a=bionic-backports
+Pin-Priority: 999
+EOF
+            apt-get -y install ubuntu-keyring
+            apt-get install -y gpg dirmngr gpg-agent
+
+            apt-key adv --keyserver   keyserver.ubuntu.com --recv-keys 04EE7237B7D453EC
+            apt-key adv --keyserver   keyserver.ubuntu.com --recv-keys 648ACFD622F3D138
+            apt-get update
+            apt-cache policy debhelper
+        }
+    ;;
+esac
+
+
+#STABLE_VERSION_REGEX='^[9|10]\.[0-9]+$'
+#
+#if $(egrep -q "$STABLE_VERSION_REGEX" "/etc/debian_version"); then
+#cat > "/etc/apt/preferences" << EOF
+#Package: debhelper
+#Pin: release a=buster-backports
+#Pin-Priority: 999
+#
+#Package: lintian
+#Pin: release a=buster-backports
+#Pin-Priority: 999
+#EOF
+#fi
+#set +x
+#
+#cat >> "/etc/apt/sources.list" << EOF
+#deb http://ftp-stud.hs-esslingen.de/debian/ buster-backports main
+#EOF
+#
+## apt-cache policy debhelper
+#apt-get update
+#apt-cache policy debhelper

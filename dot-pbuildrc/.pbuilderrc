@@ -1,0 +1,53 @@
+# vim:ft=sh
+# List of Debian suites.
+
+UNSTABLE_CODENAME="bullseye"
+TESTING_CODENAME="buster"
+STABLE_CODENAME="stretch"
+STABLE_BACKPORTS_SUITE="$STABLE_CODENAME-backports"
+
+DEBIAN_SUITES=($UNSTABLE_CODENAME $TESTING_CODENAME $STABLE_CODENAME
+    "unstable" "testing" "stable")
+
+# List of Ubuntu suites. Update these when needed.
+UBUNTU_SUITES=("precise" "xenial")
+
+# Optionally change Debian release states in $DIST to their names.
+case "$DIST" in
+    unstable)
+        DIST="$UNSTABLE_CODENAME"
+        ;;
+    testing)
+        DIST="$TESTING_CODENAME"
+        ;;
+    stable)
+        DIST="$STABLE_CODENAME"
+        ;;
+esac
+
+NAME="$DIST"
+if [ -n "${ARCH}" ]; then
+    NAME="$NAME-$ARCH"
+    DEBOOTSTRAPOPTS=("--arch" "$ARCH" "${DEBOOTSTRAPOPTS[@]}")
+else
+    ARCH=amd64
+    NAME="$NAME-$ARCH"
+    DEBOOTSTRAPOPTS=("--arch" "$ARCH" "${DEBOOTSTRAPOPTS[@]}")
+fi
+
+DISTRIBUTION="$DIST"
+BASEPATH="/var/cache/pbuilder/$NAME/base.cow/"
+BUILDRESULT="/var/cache/pbuilder/result/$NAME/"
+APTCACHE="/var/cache/pbuilder/$NAME/aptcache/"
+BUILDPLACE="/var/cache/pbuilder/build/"
+
+
+# FOR DEPENDENCIES, also see $HOME/.pbuilder/hooks/D05deps 
+# the hook dir may already be set/populated!
+HOOKDIR="$HOME/.pbuilder/hooks/"
+if [ -n "$DEPS" ] ; then
+        export DEPSBASE=/var/cache/pbuilder/deps/$NAME/
+        #export DEPSBASE=/var/cache/pbuilder/deps
+        BINDMOUNTS=$DEPSBASE
+fi
+
