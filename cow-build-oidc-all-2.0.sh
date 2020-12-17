@@ -8,7 +8,10 @@ OIDC_AGENT_DIR="${HOME}/oidc-agent-deb/oidc-agent"
 BRANCH="master"
 BUILDTMP="${HOME}/buildtemp"
 
-DISTS="buster bullseye bionic focal"
+# DISTS="buster bullseye bionic focal xenial stretch"
+DISTS="buster bullseye bionic focal xenial"
+# DISTS="buster bullseye stretch"
+# DISTS="stretch"
 
 usage(){
     echo "-b, --branch <branch>"
@@ -32,15 +35,15 @@ for DIST in $DISTS; do
     (
         LOG=$LOGS/buildlog-$DIST.log
         date > $LOG
-        echo "Preparing build for $PACKAGE $BRANCH in $DIST: "
+        echo "Preparing build for $PACKAGE $BRANCH in $DIST "
         test -d $BUILDTMP || mkdir -p $BUILDTMP
         cd $BUILDTMP
 
         test -e $DIST && rm -rf $DIST
 
         # git
-        mkdir -p $DIST/oidc-agent
-        cd $DIST/oidc-agent
+        mkdir -p $DIST
+        cd $DIST
         git clone $PACKAGE_GIT >> $LOG 2>&1
         cd $PACKAGE
         git co $BRANCH >> $LOG 2>&1
@@ -53,7 +56,7 @@ for DIST in $DISTS; do
 
         # Distro specific debian source file creation
         case "${DIST}" in
-            bionic)
+            stretch | xenial | bionic)
                 # Essentiall changes Build-Depends from debhelper-13 to 12
                 make ubuntu-bionic-source >> $LOG 2>&1
             ;;
@@ -61,91 +64,24 @@ for DIST in $DISTS; do
                 make debsource >> $LOG 2>&1
             ;;
         esac
+
+        # Distro specific dependency specification
+        case "${DIST}" in
+            stretch | xenial | bionic | focal | buster)
+                DEPENDENCY_DIR="oidc-agent"
+            ;;
+        esac
+
+        # cd back to $DIST dir
         cd ..
 
         # And start the build
-        echo -e "Starting build for $DIST \t  $PACKAGE $VERSION_DEBREL (${BRANCH}) ..."
-        sudo DEPS=oidc-agent  HOME=$HOME DIST=$DIST cowbuilder --build $FILE > $LOGS/buildlog-$DIST.log >> $LOG 2>&1
-        echo "    Done $DIST: $?"
+        echo -e "Starting build for $DIST \t  $PACKAGE $VERSION_DEBREL (${BRANCH}) (DEPS: $DEPENDENCY_DIR)..."
+        sudo DEPS=$DEPENDENCY_DIR  HOME=$HOME DIST=$DIST cowbuilder --build $FILE > $LOGS/buildlog-$DIST.log >> $LOG 2>&1 && {
+            echo -e "    Success: $DIST"
+            exit 0
+        }
+        echo -e "    Failed: $DIST  For details see $LOG"
     )&
 done
 
-# ----------------------------------------------------------------------------------------
-exit 0
-
-cd $OIDC_AGENT_DIR 
-echo "Pulling changes"
-pushd ./ > /dev/null
-git co $BRANCH
-git pull
-
-
-VERSION_DEBREL=`head -n 1 debian/changelog | awk -F\) '{ print $1 }' | awk -F\( '{ print $2 }'`
-FILE=`head -n 1 debian/changelog | awk -F\) '{ print $1 }' |sed s/\ \(/_/`".dsc"
-
-echo -e "\nBuilding oidc-agent version $VERSION_DEBREL from branch "${BRANCH}" using $OIDC_AGENT_DIR\n"
-
-echo "git stage done; now going to debuild"
-
-# create debian source package:
-case "${DIST}" in
-    bionic)
-        make ubuntu-bionic-source> $DEB_SRC_LOG 2>&1
-    ;;
-    *)
-        make debsource > $DEB_SRC_LOG 2>&1
-    ;;
-esac
-#debuild -uc -us > $DEB_SRC_LOG
-cd ..
-sudo ls -l $FILE > /dev/null || {
-    echo ".dsc file not found. I was expecting: $FILE"
-    exit 1
-}
-
-# DIST=stretch
-# (
-# echo "Building for $DIST..."
-# sudo DEPS=oidc-agent  HOME=$HOME DIST=$DIST cowbuilder --build $FILE > $LOGS/buildlog-$DIST.log 2>&1
-# echo "   $DIST: $?"
-# )&
-
-DIST=buster
-(
-echo "Building for $DIST..."
-sudo DEPS=oidc-agent  HOME=$HOME DIST=$DIST cowbuilder --build $FILE > $LOGS/buildlog-$DIST.log 2>&1
-echo "   $DIST: $?"
-)&
-
-DIST=bullseye
-(
-echo "Building for $DIST..."
-sudo                  HOME=$HOME DIST=$DIST cowbuilder --build $FILE > $LOGS/buildlog-$DIST.log 2>&1
-echo "   $DIST: $?"
-)&
-
-
-
-DIST=xenial
-(
-echo "Building for $DIST..."
-sudo DEPS=oidc-agent  HOME=$HOME DIST=$DIST cowbuilder --build $FILE > $LOGS/buildlog-$DIST.log 2>&1
-echo "   $DIST: $?"
-)&
-
-DIST=bionic
-(
-echo "Building for $DIST..."
-sudo DEPS=oidc-agent  HOME=$HOME DIST=$DIST cowbuilder --build $FILE > $LOGS/buildlog-$DIST.log 2>&1
-echo "   $DIST: $?"
-)&
-
-DIST=focal
-(
-echo "Building for $DIST..."
-sudo DEPS=oidc-agent  HOME=$HOME DIST=$DIST cowbuilder --build $FILE > $LOGS/buildlog-$DIST.log 2>&1
-echo "   $DIST: $?"
-)&
-
-wait
-popd > /dev/null
