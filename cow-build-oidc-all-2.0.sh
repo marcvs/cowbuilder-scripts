@@ -58,6 +58,9 @@ for DIST in $DISTS; do
                 # Essentiall changes Build-Depends from debhelper-13 to 12
                 make ubuntu-bionic-source >> $LOG 2>&1
             ;;
+        buster)
+                make buster-debsource >> $LOG 2>&1
+            ;;
             *)
                 make debsource >> $LOG 2>&1
             ;;
