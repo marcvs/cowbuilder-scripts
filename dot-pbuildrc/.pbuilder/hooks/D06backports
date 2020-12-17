@@ -37,6 +37,29 @@ EOF
             apt-cache policy debhelper
         }
     ;;
+    "stretch")
+        grep -Fxq "stretch-backports" /etc/apt/sources.list || {
+
+            # echo "deb http://ftp-stud.hs-esslingen.de/debian/ buster-backports main" >> /etc/apt/sources.list
+            echo "deb http://ftp-stud.hs-esslingen.de/debian/ stretch-backports main" >> /etc/apt/sources.list
+            cat > "/etc/apt/preferences" << EOF
+Package: debhelper
+Pin: release a=stretch-backports
+Pin-Priority: 999
+
+Package: lintian
+Pin: release a=stretch-backports
+Pin-Priority: 999
+EOF
+            apt-get -y install ubuntu-keyring
+            apt-get install -y gpg dirmngr gpg-agent
+
+            apt-key adv --keyserver   keyserver.ubuntu.com --recv-keys 04EE7237B7D453EC
+            apt-key adv --keyserver   keyserver.ubuntu.com --recv-keys 648ACFD622F3D138
+            apt-get update
+            apt-cache policy debhelper
+        }
+    ;;
 esac
 
 
