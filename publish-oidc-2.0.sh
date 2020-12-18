@@ -48,6 +48,8 @@ scripts" > $GITHUB/README.txt
 
 for i in $DEB_DISTROS $UBU_DISTROS; do 
     cp $BASE/result/$i-amd64/$OIDC_AGENT $GITHUB/$i-$OIDC_AGENT
+    cp $BASE/result/$i-amd64/$OIDC_AGENT_CLI $GITHUB/$i-$OIDC_AGENT_CLI
+    cp $BASE/result/$i-amd64/$OIDC_AGENT_DESKTOP $GITHUB/$i-$OIDC_AGENT_DESKTOP
     cp $BASE/result/$i-amd64/$LIBOIDC_AGENT $GITHUB/$i-$LIBOIDC_AGENT
     cp $BASE/result/$i-amd64/$LIBOIDC_AGENTDEV $GITHUB/$i-$LIBOIDC_AGENTDEV
 done
