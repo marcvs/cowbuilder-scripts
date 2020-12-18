@@ -16,11 +16,25 @@ MD_INPUT_FILE=$(cd "`dirname $0`" 2>/dev/null && pwd)/`basename $0`
 #echo "TMP: $TMP"
 #TMP="/var/cache/debian-repo"
 
-DISTROS="debian/bullseye debian/buster debian/stretch ubuntu/bionic ubuntu/xenial"
+# DISTROS="debian/bullseye debian/buster debian/stretch ubuntu/bionic ubuntu/xenial"
+DISTROS="debian/bullseye debian/buster debian/stretch ubuntu/focal ubuntu/bionic ubuntu/xenial"
 DEB_REPO="$TMP/debian"
 UBU_REPO="$TMP/ubuntu"
 export GNUPGHOME=$HOME/.gnupg
 export KEYNAME="ACDFB08FDC962044D87FF00B512839863D487A87"
+
+
+usage(){
+    echo "--distro <distro>/<release>, e.g.: debian/devel"
+    exit 0
+}
+while [ $# -gt 0 ]; do
+    case "$1" in
+    -h|--help)          usage               exit 0                ;;
+    --DISTRO)           DISTROS=${2} ;                      shift ;;
+    esac
+    shift
+done
 
 cd $TMP
 
