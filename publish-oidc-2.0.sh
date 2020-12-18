@@ -37,6 +37,18 @@ UBU_DISTROS="focal bionic"
 DEB_REPO=/var/www/debian
 UBU_REPO=/var/www/ubuntu
 
+usage(){
+    echo "Copy files to the appropriate locations on the webserver"
+    exit 0
+}
+while [ $# -gt 0 ]; do
+    case "$1" in
+    -h|--help)          usage               exit 0                ;;
+    esac
+    shift
+done
+
+
 # Clean github output:
 test -d $GITHUB || mkdir -p $GITHUB
 test -d $GITHUB && rm -f $GITHUB/*
