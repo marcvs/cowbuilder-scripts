@@ -25,7 +25,7 @@ export KEYNAME="ACDFB08FDC962044D87FF00B512839863D487A87"
 
 
 usage(){
-    echo "--distro <distro>/<release>, e.g.: debian/devel"
+    echo "--distro <distro>/<release>, e.g.: debian/devel, default: all"
     exit 0
 }
 while [ $# -gt 0 ]; do
