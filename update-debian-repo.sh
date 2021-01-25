@@ -31,7 +31,7 @@ usage(){
 while [ $# -gt 0 ]; do
     case "$1" in
     -h|--help)          usage               exit 0                ;;
-    --DISTRO)           DISTROS=${2} ;                      shift ;;
+    --distro)           DISTROS=${2} ;                      shift ;;
     esac
     shift
 done
