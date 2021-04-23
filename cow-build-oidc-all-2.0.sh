@@ -78,7 +78,7 @@ for DIST in $DISTS; do
 
         # And start the build
         echo -e "Starting build for $DIST \t  $PACKAGE $VERSION_DEBREL (${BRANCH}) (DEPS: $DEPENDENCY_DIR)..."
-        sudo DEPS=$DEPENDENCY_DIR  HOME=$HOME DIST=$DIST cowbuilder --build $FILE > $LOGS/buildlog-$DIST.log >> $LOG 2>&1 && {
+        sudo DEPS=$DEPENDENCY_DIR  HOME=$HOME DIST=$DIST cowbuilder --build $FILE >> $LOG 2>&1 && {
             echo -e "    Success: $DIST"
             exit 0
         }
