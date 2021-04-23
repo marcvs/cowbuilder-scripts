@@ -17,9 +17,9 @@ MD_INPUT_FILE=$(cd "`dirname $0`" 2>/dev/null && pwd)/`basename $0`
 #TMP="/var/cache/debian-repo"
 
 # DISTROS="debian/bullseye debian/buster debian/stretch ubuntu/bionic ubuntu/xenial"
-DISTROS="debian/bullseye debian/buster debian/stretch ubuntu/focal ubuntu/bionic ubuntu/xenial"
-DEB_REPO="$TMP/debian"
-UBU_REPO="$TMP/ubuntu"
+DISTROS="debian/bullseye debian/buster ubuntu/focal ubuntu/bionic"
+YUM_DISTROS="centos/centos7 centos/centos8"
+
 export GNUPGHOME=$HOME/.gnupg
 export KEYNAME="ACDFB08FDC962044D87FF00B512839863D487A87"
 
@@ -80,3 +80,14 @@ echo "done"
 
 # Cleanup tmp
 rm -rf $TMP
+
+#########################################################################
+# YUM REPOS
+
+echo "Updating YUM Repos:
+for d in $YUM_DISTROS; do
+    echo $d
+    ssh ${REMOTE} "
+        createrepo --database ${R_BASE}/${d}
+        "
+    done
