@@ -36,20 +36,19 @@ And add one of the supported repos to your `/etc/apt/sources.list`:
 
 
 ## RPM Packages
+To use it, [this](/repo-data-kit-edu-key.gpg) signing key is used: 
 
-- Centos 8: [https://repo.data.kit.edu/centos/centos8](https://repo.data.kit.edu/centos/centos8):
-    - Create a [file](https://repo.data.kit.edu/data-kit-edu-centos8.repo) with this content in `/etc/yum.repos.d`:
+- [Centos 8](https://repo.data.kit.edu/centos/centos8):
+    - Create a [file](http://repo.data.kit.edu/data-kit-edu-centos8.repo) with this content in `/etc/yum.repos.d`:
         ```
         cd /etc/yum.repos.d; wget http://repo.data.kit.edu/data-kit-edu-centos8.repo
         ```
-        The gpg-key is [here](/repo-data-kit-edu-key.gpg)
 
-- Centos 7: [https://repo.data.kit.edu/centos/centos7](https://repo.data.kit.edu/centos/centos7)
-    - Create a [file](https://repo.data.kit.edu/data-kit-edu-centos7.repo) with this content in `/etc/yum.repos.d`:
+- [Centos 7](https://repo.data.kit.edu/centos/centos7):
+    - Create a [file](http://repo.data.kit.edu/data-kit-edu-centos7.repo) with this content in `/etc/yum.repos.d`:
         ```
         cd /etc/yum.repos.d; wget http://repo.data.kit.edu/data-kit-edu-centos7.repo
         ```
-        The gpg-key is [here](/repo-data-kit-edu-key.gpg)
 
 
 ## Contact
