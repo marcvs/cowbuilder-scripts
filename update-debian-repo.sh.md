@@ -16,39 +16,43 @@ In that case just use the second one.
 And add one of the supported repos to your `/etc/apt/sources.list`:
 
 - [Debian/testing](/debian/testing):
-    - `deb http://repo.data.kit.edu/debian/testing ./`
-    - or: `deb http://repo.data.kit.edu/debian/bullseye ./`
+    - `deb https://repo.data.kit.edu/debian/testing ./`
+    - or: `deb https://repo.data.kit.edu/debian/bullseye ./`
 
 - [Debian/stable](/debian/stable): 
-    - `deb http://repo.data.kit.edu/debian/stable ./`
-    - or: `deb http://repo.data.kit.edu/debian/buster ./`
+    - `deb https://repo.data.kit.edu/debian/stable ./`
+    - or: `deb https://repo.data.kit.edu/debian/buster ./`
 
 - [Ubuntu/20.04](/ubuntu/20.04): 
-    - `deb http://repo.data.kit.edu/ubuntu/20.04 ./`
-    - or: `deb http://repo.data.kit.edu/ubuntu/focal ./`
+    - `deb https://repo.data.kit.edu/ubuntu/20.04 ./`
+    - or: `deb https://repo.data.kit.edu/ubuntu/focal ./`
 
 - [Ubuntu/18.04](/ubuntu/18.04): 
-    - `deb http://repo.data.kit.edu/ubuntu/18.04 ./`
-    - or: `deb http://repo.data.kit.edu/ubuntu/bionic ./`
+    - `deb https://repo.data.kit.edu/ubuntu/18.04 ./`
+    - or: `deb https://repo.data.kit.edu/ubuntu/bionic ./`
 
 ...and don't forget to run apt-get update
 
 
 
 ## RPM Packages
-To use it, [this](/repo-data-kit-edu-key.gpg) signing key is used: 
+To use it, [this](https://repo.data.kit.edu/repo-data-kit-edu-key.gpg) signing key is used: 
 
 - [Centos 8](https://repo.data.kit.edu/centos/centos8):
-    - Create a [file](http://repo.data.kit.edu/data-kit-edu-centos8.repo) with this content in `/etc/yum.repos.d`:
+    - Create a [file](https://repo.data.kit.edu/data-kit-edu-centos8.repo) with this content in `/etc/yum.repos.d`:
         ```
-        cd /etc/yum.repos.d; wget http://repo.data.kit.edu/data-kit-edu-centos8.repo
+        cd /etc/yum.repos.d; wget https://repo.data.kit.edu/data-kit-edu-centos8.repo
         ```
 
 - [Centos 7](https://repo.data.kit.edu/centos/centos7):
-    - Create a [file](http://repo.data.kit.edu/data-kit-edu-centos7.repo) with this content in `/etc/yum.repos.d`:
+    - Create a [file](https://repo.data.kit.edu/data-kit-edu-centos7.repo) with this content in `/etc/yum.repos.d`:
         ```
-        cd /etc/yum.repos.d; wget http://repo.data.kit.edu/data-kit-edu-centos7.repo
+        cd /etc/yum.repos.d; wget https://repo.data.kit.edu/data-kit-edu-centos7.repo
         ```
+
+- [Suse tumbleweed](https://repo.data.kit.edu/suse/opensuse-tumbleweed)
+- [Suse leap 15.2](https://repo.data.kit.edu/suse/opensuse-leap-15.2)
+- [Suse leap 15.3](https://repo.data.kit.edu/suse/opensuse-leap-15.3)
 
 
 ## Contact
