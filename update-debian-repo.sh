@@ -44,7 +44,8 @@ usage(){
 while [ $# -gt 0 ]; do
     case "$1" in
     -h|--help)          usage               exit 0                ;;
-    --distro)           DISTROS=${2} ;                      shift ;;
+    --distro)           DISTROS=${2} ; YUM_DISTROS=""             shift ;;
+    --yumdistro)        YUM_DISTROS=${2} ; DISTROS=""             shift ;;
     esac
     shift
 done
