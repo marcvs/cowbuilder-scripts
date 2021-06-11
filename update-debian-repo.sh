@@ -11,23 +11,6 @@ YUM_REPO_PUBKEY=$(cd "`dirname $0`" 2>/dev/null && pwd)/repo-data-kit-edu-key.gp
 YUM_REPO_CENTOS7=$(cd "`dirname $0`" 2>/dev/null && pwd)/data-kit-edu-centos7.repo
 YUM_REPO_CENTOS8=$(cd "`dirname $0`" 2>/dev/null && pwd)/data-kit-edu-centos8.repo
 
-AUX_FILES="$YUM_REPO_PUBKEY $YUM_REPO_CENTOS7 $YUM_REPO_CENTOS8"
-
-echo -n "Copy auxiliary files..."
-
-# Generate index.html
-[ -e ~/bin/md2html.sh ] && {
-    ~/bin/md2html.sh $MD_INPUT_FILE.md > $TMP/md2html.log 2>&1
-    cat /tmp/md.html > $TMP/index.html
-    scp $TMP/index.html $REMOTE:/$R_BASE/ > /dev/null || echo "error with ssh"
-}
-# copy AUX_FILES
-for i in $AUX_FILES; do 
-    scp $i $REMOTE:/$R_BASE/ > /dev/null || echo "error copying AUX_FILES"
-done
-
-echo " done"
-
 
 # DISTROS="debian/bullseye debian/buster debian/stretch ubuntu/bionic ubuntu/xenial"
 DISTROS="debian/bullseye debian/buster ubuntu/focal ubuntu/bionic"
@@ -49,6 +32,23 @@ while [ $# -gt 0 ]; do
     esac
     shift
 done
+
+AUX_FILES="$YUM_REPO_PUBKEY $YUM_REPO_CENTOS7 $YUM_REPO_CENTOS8"
+
+echo -n "Copy auxiliary files..."
+
+# Generate index.html
+[ -e ~/bin/md2html.sh ] && {
+    ~/bin/md2html.sh $MD_INPUT_FILE.md > $TMP/md2html.log 2>&1
+    cat /tmp/md.html > $TMP/index.html
+    scp $TMP/index.html $REMOTE:/$R_BASE/ > /dev/null || echo "error with ssh"
+}
+# copy AUX_FILES
+for i in $AUX_FILES; do 
+    scp $i $REMOTE:/$R_BASE/ > /dev/null || echo "error copying AUX_FILES"
+done
+
+echo " done"
 
 cd $TMP
 
