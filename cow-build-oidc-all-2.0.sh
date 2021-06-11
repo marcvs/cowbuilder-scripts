@@ -56,7 +56,7 @@ for DIST in $DISTS; do
         case "${DIST}" in
             stretch | xenial | bionic)
                 # Essentiall changes Build-Depends from debhelper-13 to 12
-                make ubuntu-bionic-source >> $LOG 2>&1
+                make bionic-source >> $LOG 2>&1
             ;;
         buster)
                 make buster-debsource >> $LOG 2>&1
