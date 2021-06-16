@@ -13,21 +13,36 @@ GITHUB="/home/build/github"
 OIDC_AGENT=oidc-agent_${VERSION}_amd64.deb
 LIBOIDC_AGENT=liboidc-agent4_${VERSION}_amd64.deb
 LIBOIDC_AGENTDEV=liboidc-agent-dev_${VERSION}_amd64.deb
-OIDC_PROMPT=oidc-agent-prompt_${VERSION}_all.deb
-OIDC_AGENT_SERVER=oidc-agent-server_${VERSION}_amd64.deb
-PACKAGES="$OIDC_AGENT \
-    oidc-agent_${VERSION}.dsc \
-    oidc-agent_${VERSION}.debian.tar.xz \
-    $OIDC_PROMPT \
-    $OIDC_AGENT_SERVER \
-    $LIBOIDC_AGENT \
-    $LIBOIDC_AGENTDEV "
-PACKAGES_DBG="
-    oidc-agent-dbgsym_${VERSION}_amd64.deb \
-    liboidc-agent4-dbgsym_${VERSION}_amd64.deb "
 
-DEB_DISTROS="bullseye buster stretch "
-UBU_DISTROS="bionic xenial"
+PACKAGES="
+oidc-agent_${VERSION}.dsc \
+liboidc-agent4_${VERSION}_amd64.deb \
+liboidc-agent-dev_${VERSION}_amd64.deb \
+oidc-agent_${VERSION}_amd64.buildinfo \
+oidc-agent_${VERSION}_amd64.changes \
+oidc-agent_${VERSION}_amd64.deb \
+oidc-agent_${VERSION}.debian.tar.xz \
+oidc-agent_4.1.0.orig.tar.gz \
+oidc-agent-cli_${VERSION}_amd64.deb \
+oidc-agent-desktop_${VERSION}_all.deb
+"
+
+PACKAGES_FOR_GITHUB="
+liboidc-agent4_${VERSION}_amd64.deb \
+liboidc-agent-dev_${VERSION}_amd64.deb \
+oidc-agent_${VERSION}_amd64.deb \
+oidc-agent-cli_${VERSION}_amd64.deb \
+oidc-agent-desktop_${VERSION}_all.deb
+"
+
+PACKAGES_DBG="
+oidc-agent-cli-dbgsym_${VERSION}_amd64.deb
+liboidc-agent4-dbgsym_${VERSION}_amd64.deb
+"
+
+
+DEB_DISTROS="bullseye buster"
+UBU_DISTROS="focal bionic"
 #DEB_REPO=/var/cache/debian-repo/debian
 #UBU_REPO=/var/cache/debian-repo/ubuntu
 DEB_REPO=/var/www/debian
@@ -43,9 +58,11 @@ scripts" > $GITHUB/README.txt
 # cp $BASE/deps/xenial-amd64/oidc-agent/libsodium18_1.0.11-2_amd64.deb $GITHUB/xenial-libsodium18_1.0.11-2_amd64.deb
 
 for i in $DEB_DISTROS $UBU_DISTROS; do 
-    cp $BASE/result/$i-amd64/$OIDC_AGENT $GITHUB/$i-$OIDC_AGENT
-    cp $BASE/result/$i-amd64/$LIBOIDC_AGENT $GITHUB/$i-$LIBOIDC_AGENT
-    cp $BASE/result/$i-amd64/$LIBOIDC_AGENTDEV $GITHUB/$i-$LIBOIDC_AGENTDEV
+    for package in $PACKAGES_FOR_GITHUB; do 
+        cp $BASE/result/$i-amd64/$OIDC_AGENT $GITHUB/$i-$OIDC_AGENT
+        cp $BASE/result/$i-amd64/$LIBOIDC_AGENT $GITHUB/$i-$LIBOIDC_AGENT
+        cp $BASE/result/$i-amd64/$LIBOIDC_AGENTDEV $GITHUB/$i-$LIBOIDC_AGENTDEV
+    done
 done
 echo "github output done. See '$GITHUB'"
 
