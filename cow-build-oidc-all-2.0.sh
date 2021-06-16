@@ -56,7 +56,7 @@ for DIST in $DISTS; do
         case "${DIST}" in
             stretch | xenial | bionic)
                 # Essentiall changes Build-Depends from debhelper-13 to 12
-                make bionic-source >> $LOG 2>&1
+                make bionic-debsource >> $LOG 2>&1
             ;;
         buster)
                 make buster-debsource >> $LOG 2>&1
@@ -68,7 +68,7 @@ for DIST in $DISTS; do
 
         # Distro specific dependency specification
         case "${DIST}" in
-            stretch | xenial | bionic | focal | buster)
+            stretch | xenial | bionic | focal )
                 DEPENDENCY_DIR="oidc-agent"
             ;;
         esac
