@@ -85,4 +85,6 @@ for DIST in $DISTS; do
         echo -e "    Failed: $DIST  For details see $LOG"
     )&
 done
+echo -e "\nOnce the build is done you can copy the files to the repo using"
+echo -e "~/cowbuilder-scripts/publish-oidc.sh ${VERSION_DEBREL} \n" 
 
