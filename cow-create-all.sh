@@ -2,6 +2,12 @@
 
 BASE=/var/cache/pbuilder/
 # DEBIAN
+export DIST=bookworm
+sudo mkdir -p $BASE/$DIST-amd64/aptcache
+sudo HOME=$HOME DIST=$DIST cowbuilder --create \
+    --basepath /var/cache/pbuilder/${DIST}-amd64/base.cow/ \
+    --distribution $DIST
+
 export DIST=bullseye
 sudo mkdir -p $BASE/$DIST-amd64/aptcache
 sudo HOME=$HOME DIST=$DIST cowbuilder --create \
