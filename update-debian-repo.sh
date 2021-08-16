@@ -12,8 +12,7 @@ YUM_REPO_CENTOS7=$(cd "`dirname $0`" 2>/dev/null && pwd)/data-kit-edu-centos7.re
 YUM_REPO_CENTOS8=$(cd "`dirname $0`" 2>/dev/null && pwd)/data-kit-edu-centos8.repo
 
 
-# DISTROS="debian/bullseye debian/buster debian/stretch ubuntu/bionic ubuntu/xenial"
-DISTROS="debian/bullseye debian/buster ubuntu/focal ubuntu/bionic"
+DISTROS="debian/bookworm debian/bullseye debian/buster ubuntu/focal ubuntu/bionic"
 YUM_DISTROS="centos/centos7 centos/centos8"
 
 export GNUPGHOME=$HOME/.gnupg

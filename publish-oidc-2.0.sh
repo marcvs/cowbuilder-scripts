@@ -30,7 +30,7 @@ PACKAGES_DBG="
     oidc-agent-cli-dbgsym_${VERSION}_amd64.deb \
     liboidc-agent4-dbgsym_${VERSION}_amd64.deb "
 
-DEB_DISTROS="bullseye buster"
+DEB_DISTROS="bookworm bullseye buster"
 UBU_DISTROS="focal bionic"
 #DEB_REPO=/var/cache/debian-repo/debian
 #UBU_REPO=/var/cache/debian-repo/ubuntu

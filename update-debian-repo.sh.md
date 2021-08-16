@@ -17,10 +17,14 @@ And add one of the supported repos to your `/etc/apt/sources.list`:
 
 - [Debian/testing](/debian/testing):
     - `deb https://repo.data.kit.edu/debian/testing ./`
+    - or: `deb https://repo.data.kit.edu/debian/bookworm ./`
+
+- [Debian/stable](/debian/stable):
+    - `deb https://repo.data.kit.edu/debian/stable ./`
     - or: `deb https://repo.data.kit.edu/debian/bullseye ./`
 
-- [Debian/stable](/debian/stable): 
-    - `deb https://repo.data.kit.edu/debian/stable ./`
+- [Debian/oldstable](/debian/oldstable): 
+    - `deb https://repo.data.kit.edu/debian/oldstable ./`
     - or: `deb https://repo.data.kit.edu/debian/buster ./`
 
 - [Ubuntu/20.04](/ubuntu/20.04): 

@@ -90,6 +90,13 @@ sudo                  HOME=$HOME DIST=$DIST cowbuilder --build $FILE > $LOGS/bui
 echo "   $DIST: $?"
 )&
 
+DIST=bookworm
+(
+echo "Building for $DIST..."
+sudo                  HOME=$HOME DIST=$DIST cowbuilder --build $FILE > $LOGS/buildlog-$DIST.log 2>&1
+echo "   $DIST: $?"
+)&
+
 
 
 DIST=xenial
