@@ -6,6 +6,8 @@ This repository provides debian packages for ubuntu, debian, and centos.
 
 To use it, you need to import the signing key:
 
+` curl repo.data.kit.edu/key.pgp > /etc/apt/trusted.gpg.d/kit-repo.gpg`
+or
 ` sudo apt-key adv --keyserver hkp://pgp.surfnet.nl --recv-keys ACDFB08FDC962044D87FF00B512839863D487A87`
 or
 ` curl repo.data.kit.edu/key.pgp | apt-key add -`
