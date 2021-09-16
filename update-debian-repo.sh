@@ -10,10 +10,11 @@ MD_INPUT_FILE=$(cd "`dirname $0`" 2>/dev/null && pwd)/`basename $0`
 YUM_REPO_PUBKEY=$(cd "`dirname $0`" 2>/dev/null && pwd)/repo-data-kit-edu-key.gpg
 YUM_REPO_CENTOS7=$(cd "`dirname $0`" 2>/dev/null && pwd)/data-kit-edu-centos7.repo
 YUM_REPO_CENTOS8=$(cd "`dirname $0`" 2>/dev/null && pwd)/data-kit-edu-centos8.repo
+YUM_REPO_FEDORA34=$(cd "`dirname $0`" 2>/dev/null && pwd)/data-kit-edu-fedora34.repo
 
 
-DISTROS="debian/bookworm debian/bullseye debian/buster ubuntu/focal ubuntu/bionic"
-YUM_DISTROS="centos/centos7 centos/centos8"
+DISTROS="debian/bookworm debian/bullseye debian/buster ubuntu/hirsute ubuntu/focal ubuntu/bionic"
+YUM_DISTROS="centos/7 centos/8 fedora/34"
 
 export GNUPGHOME=$HOME/.gnupg
 export KEYNAME="ACDFB08FDC962044D87FF00B512839863D487A87"
@@ -75,22 +76,8 @@ for d in $DISTROS ; do
     scp $TMP/$d/Release.gpg $REMOTE:$R_BASE/$d/ > /dev/null || echo "error with ssh"
     echo " done"
 done
-## Sync remote repo here:
-#echo -e "\nSign deb Release files "
-#for d in $DISTROS ; do
-#    echo -n "$d.."
-#    echo ". done"
-#done
 
-## Ensure symlinks are in place
-#    cd $DEB_REPO
-#    test -e testing || ln -s buster/ testing
-#    test -e stable  || ln -s stretch/ stable
-#
-#    cd $UBU_REPO
-#    test -e 18.04   ||ln -s bionic/ 18.04
-#    test -e 16.04   ||ln -s xenial/ 16.04
-
+#########################################################################
 #########################################################################
 # YUM REPOS
 
@@ -100,7 +87,7 @@ scp ${YUM_REPO_PUBKEY} ${REMOTE}:${R_BASE} > /dev/null || echo "error with yum s
 for d in $YUM_DISTROS; do
     echo -n "$d: create-remote..."
     ssh ${REMOTE} "
-        createrepo --database ${R_BASE}/${d} > /dev/null || echo \"error with yum ssh\"
+        /usr/bin/createrepo_c --database ${R_BASE}/${d} > /dev/null || echo \"error with yum ssh\"
         "
     scp ${REMOTE}:${R_BASE}/${d}/repodata/repomd.xml $TMP > /dev/null || echo "error with yum ssh"
     gpg --detach-sign -u $KEYNAME --armor $TMP/repomd.xml

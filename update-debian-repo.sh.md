@@ -29,6 +29,10 @@ And add one of the supported repos to your `/etc/apt/sources.list`:
     - `deb https://repo.data.kit.edu/debian/oldstable ./`
     - or: `deb https://repo.data.kit.edu/debian/buster ./`
 
+- [Ubuntu/21.04](/ubuntu/21.04): 
+    - `deb https://repo.data.kit.edu/ubuntu/21.04 ./`
+    - or: `deb https://repo.data.kit.edu/ubuntu/hirsute ./`
+
 - [Ubuntu/20.04](/ubuntu/20.04): 
     - `deb https://repo.data.kit.edu/ubuntu/20.04 ./`
     - or: `deb https://repo.data.kit.edu/ubuntu/focal ./`
