@@ -1,6 +1,6 @@
 [repo-data-kit-edu]
 name=repo-data.kit.edu
-baseurl=https://repo.data.kit.edu/centos/centos8
+baseurl=https://repo.data.kit.edu/centos/8
 gpgcheck=1
 enabled=1
 gpgkey=https://repo.data.kit.edu/repo-data-kit-edu-key.gpg
