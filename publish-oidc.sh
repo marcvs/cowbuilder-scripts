@@ -7,6 +7,8 @@ set -e
     exit 1
 }
 VERSION=$1
+VERSION_NO_RELEASE=`echo ${VERSION} | cut -d - -f 1`
+echo "Version_NO_RELEASE: $VERSION_NO_RELEASE"
 
 BASE="/var/cache/pbuilder/"
 GITHUB="/home/build/github"
@@ -22,7 +24,7 @@ oidc-agent_${VERSION}_amd64.buildinfo \
 oidc-agent_${VERSION}_amd64.changes \
 oidc-agent_${VERSION}_amd64.deb \
 oidc-agent_${VERSION}.debian.tar.xz \
-oidc-agent_4.1.0.orig.tar.gz \
+oidc-agent_${VERSION_NO_RELEASE}.orig.tar.gz \
 oidc-agent-cli_${VERSION}_amd64.deb \
 oidc-agent-desktop_${VERSION}_all.deb
 "
