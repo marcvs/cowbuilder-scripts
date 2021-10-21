@@ -1,45 +1,80 @@
 # Packages
 
-This repository provides debian packages for ubuntu, debian, and centos.
+This repository provides debian packages for **deb** and **rpm** based
+distributions.
 
 ## Debian Packages
 
 To use it, you need to import the signing key:
 
-` curl repo.data.kit.edu/key.pgp > /etc/apt/trusted.gpg.d/kit-repo.gpg`
+### New Method (Debian 11 and newer)
+
+#### 1. Download [the repository key], to a location which is **writable only by root**:
+
+```
+curl repo.data.kit.edu/repo-data-kit-edu-key.gpg \
+        | gpg --dearmor \
+        > /usr/share/keyrings/kitrepo-archive.gpg
+```
+
 or
+
+```
+gpg --no-default-keyring \
+        --keyring /usr/share/keyrings/kitrepo-archive.gpg \
+        --keyserver hkp://pgp.surfnet.nl \
+        --recv-keys ACDFB08FDC962044D87FF00B512839863D487A87
+```
+
+#### 2. add one of the supported repos to your `/etc/apt/sources.list`: (one line of the two given is enough)
+
+- [Debian/testing](/debian/testing) (one single line):
+
+     `deb [signed-by=/usr/share/keyrings/kitrepo-archive.gpg] https://repo.data.kit.edu/debian/testing ./`
+
+     `deb [signed-by=/usr/share/keyrings/kitrepo-archive.gpg] https://repo.data.kit.edu/debian/bookworm ./`
+
+
+### Old method (Debian 11 and older)
+The old method has [security drawbacks](https://www.linuxuprising.com/2021/01/apt-key-is-deprecated-how-to-add.html)
+
+#### 1. Download the key
+
+` curl repo.data.kit.edu/repo-data-kit-edu-key.gpg | gpg --dearmor > /etc/apt/trusted.gpg.d/kit-repo.gpg`
+
+or
+
 ` sudo apt-key adv --keyserver hkp://pgp.surfnet.nl --recv-keys ACDFB08FDC962044D87FF00B512839863D487A87`
+
 or
-` curl repo.data.kit.edu/key.pgp | apt-key add -`
+
+` curl repo.data.kit.edu/repo-data-kit-edu-key.gpg | apt-key add -`
 
 Please note that the first command fails in a time-out from time to time.
 In that case just use the second one.
 
-And add one of the supported repos to your `/etc/apt/sources.list`:
+#### 2. add one of the supported repos to your `/etc/apt/sources.list`: (one line of the two given is enough)
 
-- [Debian/testing](/debian/testing):
-    - `deb https://repo.data.kit.edu/debian/testing ./`
-    - or: `deb https://repo.data.kit.edu/debian/bookworm ./`
 
 - [Debian/stable](/debian/stable):
     - `deb https://repo.data.kit.edu/debian/stable ./`
-    - or: `deb https://repo.data.kit.edu/debian/bullseye ./`
+    - `deb https://repo.data.kit.edu/debian/bullseye ./`
 
 - [Debian/oldstable](/debian/oldstable): 
     - `deb https://repo.data.kit.edu/debian/oldstable ./`
-    - or: `deb https://repo.data.kit.edu/debian/buster ./`
+    - `deb https://repo.data.kit.edu/debian/buster ./`
 
 - [Ubuntu/21.04](/ubuntu/21.04): 
     - `deb https://repo.data.kit.edu/ubuntu/21.04 ./`
-    - or: `deb https://repo.data.kit.edu/ubuntu/hirsute ./`
+    - `deb https://repo.data.kit.edu/ubuntu/hirsute ./`
 
 - [Ubuntu/20.04](/ubuntu/20.04): 
     - `deb https://repo.data.kit.edu/ubuntu/20.04 ./`
-    - or: `deb https://repo.data.kit.edu/ubuntu/focal ./`
+    - `deb https://repo.data.kit.edu/ubuntu/focal ./`
 
 - [Ubuntu/18.04](/ubuntu/18.04): 
     - `deb https://repo.data.kit.edu/ubuntu/18.04 ./`
-    - or: `deb https://repo.data.kit.edu/ubuntu/bionic ./`
+    - `deb https://repo.data.kit.edu/ubuntu/bionic ./`
 
 ...and don't forget to run apt-get update
 
