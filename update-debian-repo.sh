@@ -37,12 +37,23 @@ AUX_FILES="$YUM_REPO_PUBKEY $YUM_REPO_CENTOS7 $YUM_REPO_CENTOS8"
 
 echo -n "Copy auxiliary files..."
 
+
 # Generate index.html
-[ -e ~/bin/md2html.sh ] && {
-    ~/bin/md2html.sh $MD_INPUT_FILE.md > $TMP/md2html.log 2>&1
-    cat /tmp/md.html > $TMP/index.html
-    scp $TMP/index.html $REMOTE:/$R_BASE/ > /dev/null || echo "error with ssh"
+STYLE_FILE=`dirname $0`/style_internal_css.html
+OUTPUT_FILE=$TMP/index.html
+
+test -e $STYLE_FILE || {
+    echo "" > $OUTPUT_FILE
 }
+test -e $STYLE_FILE && {
+    cat $STYLE_FILE > $OUTPUT_FILE
+}
+pandoc -f gfm -t html $INPUT_FILE >> $OUTPUT_FILE
+
+cat /tmp/md.html > $TMP/index.html
+scp $OUTPUT_FILE$ $REMOTE:/$R_BASE/ > /dev/null || echo "error with ssh"
+
+
 # copy AUX_FILES
 for i in $AUX_FILES; do 
     scp $i $REMOTE:/$R_BASE/ > /dev/null || echo "error copying AUX_FILES"
