@@ -9,16 +9,17 @@ To use it, you need to import the signing key:
 
 ### New Method (Debian 11 and newer)
 
-#### 1. Download [the repository key], to a location which is **writable only by root**:
+#### 1. Download the repository key, to a location which is **writable only by root**:
+Two options:
 
+Option a):
 ```
 curl repo.data.kit.edu/repo-data-kit-edu-key.gpg \
         | gpg --dearmor \
         > /usr/share/keyrings/kitrepo-archive.gpg
 ```
 
-or
-
+Option b):
 ```
 gpg --no-default-keyring \
         --keyring /usr/share/keyrings/kitrepo-archive.gpg \
@@ -39,14 +40,17 @@ gpg --no-default-keyring \
 The old method has [security drawbacks](https://www.linuxuprising.com/2021/01/apt-key-is-deprecated-how-to-add.html)
 
 #### 1. Download the key
+Three options:
+
+Option a)
 
 ` curl repo.data.kit.edu/repo-data-kit-edu-key.gpg | gpg --dearmor > /etc/apt/trusted.gpg.d/kit-repo.gpg`
 
-or
+Option b)
 
 ` sudo apt-key adv --keyserver hkp://pgp.surfnet.nl --recv-keys ACDFB08FDC962044D87FF00B512839863D487A87`
 
-or
+Option c)
 
 ` curl repo.data.kit.edu/repo-data-kit-edu-key.gpg | apt-key add -`
 
