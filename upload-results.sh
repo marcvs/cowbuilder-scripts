@@ -11,6 +11,7 @@ usage() {
     echo "
     -h|--help           usage
     -v|--version        Specify specific version (e.g. 4.3.2 or 4.3.2-2) 
+    --verbse            Be more verbose
     "
     exit 0
 }
