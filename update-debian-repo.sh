@@ -6,7 +6,7 @@
 REMOTE=root@repo.data.kit.edu
 R_BASE=/var/www/
 TMP=`mktemp -d`
-MD_INPUT_FILE=$(cd "`dirname $0`" 2>/dev/null && pwd)/`basename $0`
+MD_INPUT_FILE=$(cd "`dirname $0`" 2>/dev/null && pwd)/`basename $0`.md
 YUM_REPO_PUBKEY=$(cd "`dirname $0`" 2>/dev/null && pwd)/repo-data-kit-edu-key.gpg
 YUM_REPO_CENTOS7=$(cd "`dirname $0`" 2>/dev/null && pwd)/data-kit-edu-centos7.repo
 YUM_REPO_CENTOS8=$(cd "`dirname $0`" 2>/dev/null && pwd)/data-kit-edu-centos8.repo
@@ -48,10 +48,9 @@ test -e $STYLE_FILE || {
 test -e $STYLE_FILE && {
     cat $STYLE_FILE > $OUTPUT_FILE
 }
-pandoc -f gfm -t html $INPUT_FILE >> $OUTPUT_FILE
-
-cat /tmp/md.html > $TMP/index.html
-scp $OUTPUT_FILE$ $REMOTE:/$R_BASE/ > /dev/null || echo "error with ssh"
+#echo "pandoc -f gfm -t html $MD_INPUT_FILE   >> $OUTPUT_FILE"
+pandoc -f gfm -t html $MD_INPUT_FILE >> $OUTPUT_FILE
+scp $OUTPUT_FILE $REMOTE:/$R_BASE/ > /dev/null || echo "error with ssh"
 
 
 # copy AUX_FILES
