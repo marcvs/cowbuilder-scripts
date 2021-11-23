@@ -5,6 +5,7 @@ REPOBASE="build@repo.data.kit.edu:/var/www"
 #rpmsign --addsign */*rpm
 
 VERSION="NONE"
+VERBOSE="NOPE"
 
 usage() {
     echo "
@@ -18,6 +19,7 @@ while [ $# -gt 0 ]; do
     case "$1" in
     -h|--help)          usage                           exit 0          ;;
     -v|--version)       VERSION=$2;                                shift;;
+    --verbose)          VERBOSE="SHURE"                                 ;;
     esac
     shift
 done
@@ -40,10 +42,10 @@ CUR_DIR=`basename \`pwd\``
 
 
 for i in * ; do 
-    DIST=`echo $i | cut -d_ -f 1`
+    DIST_NAM=`echo $i | cut -d_ -f 1`
     DIST_REL=`echo $i | cut -d_ -f 2`
 
-    echo -e "\n$DIST - $DIST_REL"
+    echo -e "\n$DIST_NAM_$DIST_REL"
     PKG_VER=`echo $VERSION | awk -F- '{ print $1 }' `
     PKG_REL=`echo $VERSION | awk -F- '{ print $2 }' `
 
@@ -55,10 +57,28 @@ for i in * ; do
     #echo PKG_VER: $PKG_VER
     #echo PKG_REL: $PKG_REL
     #echo VERSION: $VERSION
+    #echo DIST_NAM:$DIST_NAM
+    #echo DIST_REL:$DIST_REL
 
     #echo scp -q $i/*_${VERSION}*.deb $i/*-${VERSION}*.rpm $i/*.gz $i/*.xz $i/*.changes $i/*.dsc \
     #    ${REPOBASE}/${DIST}/${REL}
-    scp -q $i/*_${VERSION}*.deb $i/*-${VERSION}*.rpm $i/*_${VERSION}.xz $i/*_${VERSION}.changes $i/*_${VERSION}.dsc \
-        ${REPOBASE}/${DIST}/${REL}
-    #ls -l $i; done
+    for FILE in $i/*_${VERSION}*.deb $i/*-${VERSION}*.rpm $i/*_${VERSION}.xz $i/*_${VERSION}.changes $i/*_${VERSION}.dsc; do 
+        [ -e $FILE ] && {
+            RV="ok"
+            scp -p -q $FILE ${REPOBASE}/${DIST_NAM}/${DIST_REL} 2> /dev/null || {
+                RV="fail"
+            }
+            [ "x$VERBOSE" == "xNOPE" ] || { 
+                echo scp -p -q $FILE ${REPOBASE}/${DIST_NAM}/${DIST_REL} 2> /dev/null
+            }
+            [ "x$VERBOSE" == "xNOPE" ] && { 
+                echo "$FILE: $RV"
+            }
+        }
+    [ "x$VERBOSE" == "xNOPE" ] || { 
+        [ -e $FILE ] || {
+            echo "$FILE: Skipped"
+        }
+}
+    done
 done
