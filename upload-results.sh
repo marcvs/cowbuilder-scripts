@@ -46,7 +46,7 @@ for i in * ; do
     DIST_NAM=`echo $i | cut -d_ -f 1`
     DIST_REL=`echo $i | cut -d_ -f 2`
 
-    echo -e "\n$DIST_NAM_$DIST_REL"
+    echo -e "\n${DIST_NAM}_${DIST_REL}"
     PKG_VER=`echo $VERSION | awk -F- '{ print $1 }' `
     PKG_REL=`echo $VERSION | awk -F- '{ print $2 }' `
 
