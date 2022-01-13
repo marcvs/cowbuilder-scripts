@@ -27,11 +27,15 @@ usage(){
 while [ $# -gt 0 ]; do
     case "$1" in
     -h|--help)          usage               exit 0                ;;
-    --distro)           DISTROS=${2} ; YUM_DISTROS=""             shift ;;
-    --yumdistro)        YUM_DISTROS=${2} ; DISTROS=""             shift ;;
+    -d|--distro)           DISTROS=${2} ; YUM_DISTROS="";             shift ;;
+    -y|--yumdistro)        YUM_DISTROS=${2} ; DISTROS="";             shift ;;
     esac
     shift
 done
+
+echo "DEB_DISTROS: ${DISTROS}"
+echo "YUM_DISTROS: ${YUM_DISTROS}"
+echo ""
 
 AUX_FILES="$YUM_REPO_PUBKEY $YUM_REPO_CENTOS7 $YUM_REPO_CENTOS8"
 
@@ -63,7 +67,7 @@ echo " done"
 cd $TMP
 
 ## Generate repo files remotely
-echo "Update deb Repos:"
+[ -z ${DISTROS} ] || echo "Update deb Repos:"
 for d in $DISTROS ; do
     echo -n "$d: create-remote..."
     ssh $REMOTE "
@@ -83,6 +87,7 @@ for d in $DISTROS ; do
     mkdir -p $TMP/$d
     scp $REMOTE:$R_BASE/$d/Release $TMP/$d  > /dev/null || echo "error with ssh"
     gpg --yes -abs -u $KEYNAME -o $d/Release.gpg $d/Release
+    echo -n " upload..."
     scp $TMP/$d/Release.gpg $REMOTE:$R_BASE/$d/ > /dev/null || echo "error with ssh"
     echo " done"
 done
@@ -91,7 +96,7 @@ done
 #########################################################################
 # YUM REPOS
 
-echo -e "\nUpdating yum Repos:"
+[ -z ${YUM_DISTROS} ] || echo -e "\nUpdating yum Repos:"
 scp ${YUM_REPO_PUBKEY} ${REMOTE}:${R_BASE} > /dev/null || echo "error with yum ssh"
 
 for d in $YUM_DISTROS; do
@@ -99,10 +104,11 @@ for d in $YUM_DISTROS; do
     ssh ${REMOTE} "
         /usr/bin/createrepo_c --database ${R_BASE}/${d} > /dev/null || echo \"error with yum ssh\"
         "
+    echo -n " sign-locally..."
     scp ${REMOTE}:${R_BASE}/${d}/repodata/repomd.xml $TMP > /dev/null || echo "error with yum ssh"
     gpg --detach-sign -u $KEYNAME --armor $TMP/repomd.xml
     
-    echo -n " sign-locally..."
+    echo -n " upload..."
     scp ${TMP}/repomd.xml.asc ${REMOTE}:${R_BASE}/${d}/repodata/ > /dev/null || echo "error with yum ssh"
     rm -f ${TMP}/repomd.xml*
     echo " done"
