@@ -66,7 +66,8 @@ echo " done"
 
 cd $TMP
 
-## Generate repo files remotely
+#########################################################################
+# DEB REPOS
 [ -z ${DISTROS} ] || echo "Update deb Repos:"
 for d in $DISTROS ; do
     echo -n "$d: create-remote..."
@@ -92,7 +93,6 @@ for d in $DISTROS ; do
     echo " done"
 done
 
-#########################################################################
 #########################################################################
 # YUM REPOS
 
