@@ -3,6 +3,7 @@
 # find md docs in update-debian-repo.sh.md
 # (in the same folder as this executable)
 
+ORIG_IFS=$IFS
 REMOTE=root@repo.data.kit.edu
 R_BASE=/var/www/
 TMP=`mktemp -d`
@@ -68,7 +69,9 @@ cd $TMP
 
 #########################################################################
 # DEB REPOS
+IFS="____"
 [ -z ${DISTROS} ] || echo "Update deb Repos:"
+IFS=$ORIG_IFS
 for d in $DISTROS ; do
     echo -n "$d: create-remote..."
     ssh $REMOTE "
@@ -96,7 +99,9 @@ done
 #########################################################################
 # YUM REPOS
 
+IFS="____"
 [ -z ${YUM_DISTROS} ] || echo -e "\nUpdating yum Repos:"
+IFS=$ORIG_IFS
 scp ${YUM_REPO_PUBKEY} ${REMOTE}:${R_BASE} > /dev/null || echo "error with yum ssh"
 
 for d in $YUM_DISTROS; do
