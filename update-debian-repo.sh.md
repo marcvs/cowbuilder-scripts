@@ -12,28 +12,19 @@ To use it, you need to import the signing key:
 #### 1. Download the repository key, to a location which is **writable only by root**:
 Two options:
 
-Option a):
+Option a) (recommended):
 ```
 curl repo.data.kit.edu/repo-data-kit-edu-key.gpg \
         | gpg --dearmor \
-        > /usr/share/keyrings/kitrepo-archive.gpg
+        > /etc/apt/trusted.gpg.d/kitrepo-archive.gpg
 ```
-
-Option b):
-```
-gpg --no-default-keyring \
-        --keyring /usr/share/keyrings/kitrepo-archive.gpg \
-        --keyserver hkp://pgp.surfnet.nl \
-        --recv-keys ACDFB08FDC962044D87FF00B512839863D487A87
-```
-
 #### 2. add one of the supported repos to your `/etc/apt/sources.list`: (one line of the two given is enough)
 
 - [Debian/testing](/debian/testing) (one single line):
 
-     `deb [signed-by=/usr/share/keyrings/kitrepo-archive.gpg] https://repo.data.kit.edu/debian/testing ./`
+     `deb [signed-by=/etc/apt/trusted.gpg.d/kitrepo-archive.gpg] https://repo.data.kit.edu/debian/testing ./`
 
-     `deb [signed-by=/usr/share/keyrings/kitrepo-archive.gpg] https://repo.data.kit.edu/debian/bookworm ./`
+     `deb [signed-by=/etc/apt/trusted.gpg.d/kitrepo-archive.gpg] https://repo.data.kit.edu/debian/bookworm ./`
 
 
 ### Old method (Debian 11 and older)
