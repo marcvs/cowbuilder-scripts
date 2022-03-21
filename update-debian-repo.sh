@@ -11,11 +11,14 @@ MD_INPUT_FILE=$(cd "`dirname $0`" 2>/dev/null && pwd)/`basename $0`.md
 YUM_REPO_PUBKEY=$(cd "`dirname $0`" 2>/dev/null && pwd)/repo-data-kit-edu-key.gpg
 YUM_REPO_CENTOS7=$(cd "`dirname $0`" 2>/dev/null && pwd)/data-kit-edu-centos7.repo
 YUM_REPO_CENTOS8=$(cd "`dirname $0`" 2>/dev/null && pwd)/data-kit-edu-centos8.repo
+YUM_REPO_CENTOS_STREAM=$(cd "`dirname $0`" 2>/dev/null && pwd)/data-kit-edu-centos-stream.repo
+YUM_REPO_ROCKY8=$(cd "`dirname $0`" 2>/dev/null && pwd)/data-kit-edu-rocky8.repo
+YUM_REPO_ROCKY85=$(cd "`dirname $0`" 2>/dev/null && pwd)/data-kit-edu-rocky8.5.repo
 YUM_REPO_FEDORA34=$(cd "`dirname $0`" 2>/dev/null && pwd)/data-kit-edu-fedora34.repo
 
 
 DISTROS="debian/bookworm debian/bullseye debian/buster ubuntu/hirsute ubuntu/focal ubuntu/bionic"
-YUM_DISTROS="centos/7 centos/8 fedora/34"
+YUM_DISTROS="centos/7 centos/8 centos/stream rocky/8 rocky/8.5 fedora/34"
 
 export GNUPGHOME=$HOME/.gnupg
 export KEYNAME="ACDFB08FDC962044D87FF00B512839863D487A87"
@@ -38,7 +41,7 @@ echo "DEB_DISTROS: ${DISTROS}"
 echo "YUM_DISTROS: ${YUM_DISTROS}"
 echo ""
 
-AUX_FILES="$YUM_REPO_PUBKEY $YUM_REPO_CENTOS7 $YUM_REPO_CENTOS8"
+AUX_FILES="$YUM_REPO_PUBKEY $YUM_REPO_CENTOS7 $YUM_REPO_CENTOS8 $YUM_REPO_CENTOS_STREAM $YUM_REPO_ROCKY8 $YUM_REPO_ROCKY85"
 
 echo -n "Copy auxiliary files..."
 
