@@ -95,20 +95,20 @@ To use it, [this](https://repo.data.kit.edu/repo-data-kit-edu-key.gpg) signing k
         cd /etc/yum.repos.d; wget https://repo.data.kit.edu/data-kit-edu-centos-stream.repo
         ```
 
-- [Rocky Linux 8.5](https://repo.data.kit.edu/rocky/rocky8.5):
-    - Create a [file](https://repo.data.kit.edu/data-kit-edu-rocky8.5.repo) with this content in `/etc/yum.repos.d`:
+- [Rocky Linux 8.5](https://repo.data.kit.edu/rockylinux/8.5):
+    - Create a [file](https://repo.data.kit.edu/data-kit-edu-rockylinux8.5.repo) with this content in `/etc/yum.repos.d`:
         ```
-        cd /etc/yum.repos.d; wget https://repo.data.kit.edu/data-kit-edu-rocky8.5.repo
+        cd /etc/yum.repos.d; wget https://repo.data.kit.edu/data-kit-edu-rockylinux8.5.repo
         ```
-- [Rocky Linux 8](https://repo.data.kit.edu/rocky/rocky8):
-    - Create a [file](https://repo.data.kit.edu/data-kit-edu-rocky8.repo) with this content in `/etc/yum.repos.d`:
+- [Rocky Linux 8](https://repo.data.kit.edu/rockylinux/8):
+    - Create a [file](https://repo.data.kit.edu/data-kit-edu-rockylinux8.repo) with this content in `/etc/yum.repos.d`:
         ```
-        cd /etc/yum.repos.d; wget https://repo.data.kit.edu/data-kit-edu-rocky8.repo
+        cd /etc/yum.repos.d; wget https://repo.data.kit.edu/data-kit-edu-rockylinux8.repo
         ```
 
-- [Suse tumbleweed](https://repo.data.kit.edu/suse/opensuse-tumbleweed)
-- [Suse leap 15.2](https://repo.data.kit.edu/suse/opensuse-leap-15.2)
-- [Suse leap 15.3](https://repo.data.kit.edu/suse/opensuse-leap-15.3)
+- [Suse tumbleweed](https://repo.data.kit.edu/opensuse/tumbleweed)
+- [Suse leap 15.2](https://repo.data.kit.edu/opensuse/15.2)
+- [Suse leap 15.3](https://repo.data.kit.edu/opensuse/15.3)
 
 
 ## Contact

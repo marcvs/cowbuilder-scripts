@@ -12,13 +12,13 @@ YUM_REPO_PUBKEY=$(cd "`dirname $0`" 2>/dev/null && pwd)/repo-data-kit-edu-key.gp
 YUM_REPO_CENTOS7=$(cd "`dirname $0`" 2>/dev/null && pwd)/data-kit-edu-centos7.repo
 YUM_REPO_CENTOS8=$(cd "`dirname $0`" 2>/dev/null && pwd)/data-kit-edu-centos8.repo
 YUM_REPO_CENTOS_STREAM=$(cd "`dirname $0`" 2>/dev/null && pwd)/data-kit-edu-centos-stream.repo
-YUM_REPO_ROCKY8=$(cd "`dirname $0`" 2>/dev/null && pwd)/data-kit-edu-rocky8.repo
-YUM_REPO_ROCKY85=$(cd "`dirname $0`" 2>/dev/null && pwd)/data-kit-edu-rocky8.5.repo
+YUM_REPO_ROCKY8=$(cd "`dirname $0`" 2>/dev/null && pwd)/data-kit-edu-rockylinux8.repo
+YUM_REPO_ROCKY85=$(cd "`dirname $0`" 2>/dev/null && pwd)/data-kit-edu-rockylinux8.5.repo
 YUM_REPO_FEDORA36=$(cd "`dirname $0`" 2>/dev/null && pwd)/data-kit-edu-fedora.repo
 
 
 DISTROS="debian/bookworm debian/bullseye debian/buster ubuntu/hirsute ubuntu/focal ubuntu/bionic"
-YUM_DISTROS="centos/7 centos/8 centos/stream rocky/8 rocky/8.5 fedora/36"
+YUM_DISTROS="centos/7 centos/8 centos/stream rockylinux/8 rockylinux/8.5 fedora/36"
 
 export GNUPGHOME=$HOME/.gnupg
 export KEYNAME="ACDFB08FDC962044D87FF00B512839863D487A87"
