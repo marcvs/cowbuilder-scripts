@@ -44,6 +44,10 @@ ZYPPER_DISTROS="\
 
 export GNUPGHOME=$HOME/.gnupg
 export KEYNAME="ACDFB08FDC962044D87FF00B512839863D487A87"
+BUILD_UID=1000
+BUILD_USER=build
+CICD_UID=1001
+CICD_USER=cicd
 
 
 usage(){
@@ -89,8 +93,10 @@ test -e $STYLE_FILE && {
     cat $STYLE_FILE > $OUTPUT_FILE
 }
 #echo "pandoc -f gfm -t html $MD_INPUT_FILE   >> $OUTPUT_FILE"
-pandoc -f gfm -t html $MD_INPUT_FILE >> $OUTPUT_FILE
-scp $OUTPUT_FILE $REMOTE:/$R_BASE/ > /dev/null || echo "error with ssh"
+[ x$R_BASE=="x/var/www/staging" ] || {
+    pandoc -f gfm -t html $MD_INPUT_FILE >> $OUTPUT_FILE
+    scp $OUTPUT_FILE $REMOTE:/$R_BASE/ > /dev/null || echo "error with ssh"
+}
 
 
 # copy AUX_FILES
