@@ -5,9 +5,10 @@
 
 ORIG_IFS=$IFS
 REMOTE=root@repo.data.kit.edu
-R_BASE=/var/www/
+R_BASE=/var/www/staging
+#R_BASE=/var/www
 TMP=`mktemp -d`
-MD_INPUT_FILE=$(cd "`dirname $0`" 2>/dev/null && pwd)/`basename $0`.md
+MD_INPUT_FILE=$(cd "`dirname $0`" 2>/dev/null && pwd)/update-debian-repo.sh.md
 YUM_REPO_PUBKEY=$(cd "`dirname $0`" 2>/dev/null && pwd)/repo-data-kit-edu-key.gpg
 YUM_REPO_CENTOS7=$(cd "`dirname $0`" 2>/dev/null && pwd)/data-kit-edu-centos7.repo
 YUM_REPO_CENTOS8=$(cd "`dirname $0`" 2>/dev/null && pwd)/data-kit-edu-centos8.repo
@@ -16,9 +17,30 @@ YUM_REPO_ROCKY8=$(cd "`dirname $0`" 2>/dev/null && pwd)/data-kit-edu-rockylinux8
 YUM_REPO_ROCKY85=$(cd "`dirname $0`" 2>/dev/null && pwd)/data-kit-edu-rockylinux8.5.repo
 YUM_REPO_FEDORA36=$(cd "`dirname $0`" 2>/dev/null && pwd)/data-kit-edu-fedora.repo
 
-
-DISTROS="debian/bookworm debian/bullseye debian/buster ubuntu/hirsute ubuntu/focal ubuntu/bionic"
-YUM_DISTROS="centos/7 centos/8 centos/stream rockylinux/8 rockylinux/8.5 fedora/36"
+DISTROS="\
+    debian/buster \
+    debian/bullseye \
+    debian/bookworm \
+    ubuntu/focal \
+    ubuntu/jammy \
+    ubuntu/impish \
+    ubuntu/bionic \
+    ubuntu/hirsute \
+"
+YUM_DISTROS="\
+    fedora/36 \
+    rockylinux/8 \
+    rockylinux/8.5 \
+    centos/8 \
+    centos/stream \
+    centos/7 \
+"
+ZYPPER_DISTROS="\
+    opensuse/15.2 \
+    opensuse/15.4 \
+    opensuse/tumbleweed \
+    opensuse/15.3 \
+"
 
 export GNUPGHOME=$HOME/.gnupg
 export KEYNAME="ACDFB08FDC962044D87FF00B512839863D487A87"
@@ -37,8 +59,17 @@ while [ $# -gt 0 ]; do
     shift
 done
 
-echo "DEB_DISTROS: ${DISTROS}"
-echo "YUM_DISTROS: ${YUM_DISTROS}"
+
+echo "DEB_DISTROS:"
+for i in ${DISTROS}; do
+    echo "    $i"
+done
+
+echo "YUM_DISTROS:"
+for i in ${YUM_DISTROS}; do
+    echo "    $i"
+done
+
 echo ""
 
 AUX_FILES="$YUM_REPO_PUBKEY $YUM_REPO_CENTOS7 $YUM_REPO_CENTOS8 $YUM_REPO_CENTOS_STREAM $YUM_REPO_ROCKY8 $YUM_REPO_ROCKY85 $YUM_REPO_FEDORA36"
