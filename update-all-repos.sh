@@ -66,6 +66,10 @@ while [ $# -gt 0 ]; do
 done
 
 
+[ x$R_BASE=="x/var/www/staging" ] && {
+    echo -e "\nWorking on STAGING environment. (Use --production to work on production)\n\n"
+}
+
 echo "DEB_DISTROS:"
 for i in ${DISTROS}; do
     echo "    $i"
