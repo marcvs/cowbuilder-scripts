@@ -17,7 +17,7 @@ YUM_REPO_ROCKY85=$(cd "`dirname $0`" 2>/dev/null && pwd)/data-kit-edu-rockylinux
 YUM_REPO_FEDORA36=$(cd "`dirname $0`" 2>/dev/null && pwd)/data-kit-edu-fedora.repo
 
 
-DISTROS="debian/bookworm debian/bullseye debian/buster ubuntu/hirsute ubuntu/focal ubuntu/bionic"
+DISTROS="debian/bookworm debian/bullseye debian/buster ubuntu/hirsute ubuntu/focal ubuntu/bionic ubuntu/impish ubuntu/jammy"
 YUM_DISTROS="centos/7 centos/8 centos/stream rockylinux/8 rockylinux/8.5 fedora/36"
 
 export GNUPGHOME=$HOME/.gnupg
