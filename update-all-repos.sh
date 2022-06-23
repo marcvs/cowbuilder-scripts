@@ -143,7 +143,6 @@ done
 IFS="____"
 [ -z ${YUM_DISTROS} ] || echo -e "\nUpdating yum Repos:"
 IFS=$ORIG_IFS
-scp ${YUM_REPO_PUBKEY} ${REMOTE}:${R_BASE} > /dev/null || echo "error with yum ssh"
 
 for d in $YUM_DISTROS; do
     echo -n "$d: create-remote..."
