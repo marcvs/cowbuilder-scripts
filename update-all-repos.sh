@@ -52,9 +52,10 @@ usage(){
 }
 while [ $# -gt 0 ]; do
     case "$1" in
-    -h|--help)          usage               exit 0                ;;
-    -d|--distro)           DISTROS=${2} ; YUM_DISTROS="";             shift ;;
-    -y|--yumdistro)        YUM_DISTROS=${2} ; DISTROS="";             shift ;;
+    -h|--help)          usage               exit 0                    ;;
+    -d|--distro)           DISTROS=${2} ; YUM_DISTROS="";       shift ;;
+    -y|--yumdistro)        YUM_DISTROS=${2} ; DISTROS="";       shift ;;
+    --production)           R_BASE="/var/www";                  shift ;;
     esac
     shift
 done
