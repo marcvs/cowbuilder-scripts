@@ -5,6 +5,7 @@
 
 ORIG_IFS=$IFS
 REMOTE=root@repo.data.kit.edu
+REMOTE_HOST=repo.data.kit.edu
 R_BASE=/var/www/staging
 #R_BASE=/var/www
 TMP=`mktemp -d`
@@ -144,8 +145,25 @@ IFS="____"
 [ -z ${YUM_DISTROS} ] || echo -e "\nUpdating yum Repos:"
 IFS=$ORIG_IFS
 
+[ x$R_BASE=="x/var/www/staging" ] || {
+    RPM_SIGN_USER=${BUILD_USER}
+    RPM_SIGN_UID=${BUILD_UID}
+}
+[ x$R_BASE=="x/var/www/staging" ] && {
+    RPM_SIGN_USER=${CICD_USER}
+    RPM_SIGN_UID=${CICD_UID}
+}
+
+
+
 for d in $YUM_DISTROS; do
-    echo -n "$d: create-remote..."
+    echo -n "$d: sign rpms..."
+    ssh -R /run/user/${RPM_SIGN_UID}/gnupg/S.gpg-agent:/run/user/${UID}/gnupg/S.gpg-agent.extra \
+        ${RPM_SIGN_USER}@${REMOTE_HOST} "
+        rpmsign --addsign ${R_BASE}/${d}/*rpm > /dev/null 2>&1 || echo \"Error signing rpms in ${d}\"
+        "
+
+    echo -n " create-remote..."
     ssh ${REMOTE} "
         /usr/bin/createrepo_c --database ${R_BASE}/${d} > /dev/null || echo \"error with yum ssh\"
         "
