@@ -92,18 +92,18 @@ test -e $STYLE_FILE || {
 test -e $STYLE_FILE && {
     cat $STYLE_FILE > $OUTPUT_FILE
 }
+
+# Only for real repo:
 #echo "pandoc -f gfm -t html $MD_INPUT_FILE   >> $OUTPUT_FILE"
 [ x$R_BASE=="x/var/www/staging" ] || {
     pandoc -f gfm -t html $MD_INPUT_FILE >> $OUTPUT_FILE
     scp $OUTPUT_FILE $REMOTE:/$R_BASE/ > /dev/null || echo "error with ssh"
+
+    # copy AUX_FILES
+    for i in $AUX_FILES; do 
+        scp $i $REMOTE:/$R_BASE/ > /dev/null || echo "error copying AUX_FILES"
+    done
 }
-
-
-# copy AUX_FILES
-for i in $AUX_FILES; do 
-    scp $i $REMOTE:/$R_BASE/ > /dev/null || echo "error copying AUX_FILES"
-done
-
 echo " done"
 
 cd $TMP
