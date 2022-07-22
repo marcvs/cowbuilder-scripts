@@ -5,7 +5,6 @@
 
 ORIG_IFS=$IFS
 REMOTE=root@repo.data.kit.edu
-REMOTE_HOST=repo.data.kit.edu
 R_BASE=/var/www/staging
 #R_BASE=/var/www
 TMP=`mktemp -d`
@@ -126,9 +125,6 @@ IFS="____"
 IFS=$ORIG_IFS
 for d in $DISTROS ; do
     echo -n "$d: create-remote..."
-    [ -z ${VERBOSE} ] || {
-        echo -e "\n ssh $REMOTE "
-    }
     ssh $REMOTE "
         cd $R_BASE/$d
 
@@ -158,31 +154,48 @@ IFS="____"
 [ -z ${YUM_DISTROS} ] || echo -e "\nUpdating yum Repos:"
 IFS=$ORIG_IFS
 
+# since this is a bit weird:
+# - We sign as root (to avoid touching the cicd users ssh-keys)
+# - After signing the rpms are owned by root, so we chown them back to the
+#   correct ${RPM_SIGN_USER}
+
 [ x$R_BASE=="x/var/www/staging" ] || {
     RPM_SIGN_USER=${BUILD_USER}
     RPM_SIGN_UID=${BUILD_UID}
+    #RPM_SIGN_UID=0
 }
 [ x$R_BASE=="x/var/www/staging" ] && {
     RPM_SIGN_USER=${CICD_USER}
     RPM_SIGN_UID=${CICD_UID}
+    RPM_SIGN_UID=0
 }
 
 
-
 for d in $YUM_DISTROS; do
-    echo -n "$d: sign rpms..."
+    echo -n "$d: sign rpms..(takes long).."
     [ -z ${VERBOSE} ] || {
-        echo -e "\n ssh ${RPM_SIGN_USER}@${REMOTE_HOST} "
+    echo -e "\nssh -R /run/user/${RPM_SIGN_UID}/gnupg/S.gpg-agent:/run/user/${UID}/gnupg/S.gpg-agent.extra \
+        ${REMOTE} \"
+        rpmsign --addsign ${R_BASE}/${d}/*rpm > /dev/null 2>&1 \"
+        "
     }
+    # Sign
     ssh -R /run/user/${RPM_SIGN_UID}/gnupg/S.gpg-agent:/run/user/${UID}/gnupg/S.gpg-agent.extra \
-        ${RPM_SIGN_USER}@${REMOTE_HOST} "
-        rpmsign --addsign ${R_BASE}/${d}/*rpm > /dev/null 2>&1 || echo \"Error signing rpms in ${d}\"
+        ${REMOTE} "
+        rpmsign --addsign ${R_BASE}/${d}/*rpm > /dev/null 2>&1 || {
+            echo \"  -> Error signing rpms in ${d} <-\"
+            echo -e \"\n    try running this:\n        ssh -R /run/user/${RPM_SIGN_UID}/gnupg/S.gpg-agent:/run/user/${UID}/gnupg/S.gpg-agent.extra ${REMOTE} \\\"gpg -K\\\" \"
+            echo -e \"    If the output is empty, there is another root session open. Make sure the other root closes it\n\"
+        }
+        "
+    # Chown back to the right user:
+    ssh ${REMOTE} "
+        chown ${RPM_SIGN_USER} ${R_BASE}/${d}/*rpm > /dev/null 2>&1 || echo \"Error chowning rpms back ${d}\"
+        chmod 644 ${R_BASE}/${d}/*rpm > /dev/null 2>&1 || echo \"Error chmoding rpms back ${d}\"
         "
 
+
     echo -n " create-remote..."
-    [ -z ${VERBOSE} ] || {
-        echo -e "\n ssh $REMOTE "
-    }
     ssh ${REMOTE} "
         /usr/bin/createrepo_c --database ${R_BASE}/${d} > /dev/null || echo \"error with yum ssh\"
         "
