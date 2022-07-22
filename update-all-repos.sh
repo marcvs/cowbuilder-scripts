@@ -27,6 +27,7 @@ DISTROS="\
     ubuntu/impish \
     ubuntu/bionic \
     ubuntu/hirsute \
+    ubuntu/kinetic \
 "
 YUM_DISTROS="\
     fedora/36 \
@@ -49,10 +50,14 @@ BUILD_UID=1000
 BUILD_USER=build
 CICD_UID=1001
 CICD_USER=cicd
+VERBOSE=""
 
 
 usage(){
-    echo "--distro <distro>/<release>, e.g.: debian/devel, default: all"
+    echo "--distro          <distro>/<release>, e.g.: debian/devel, default: all"
+    echo "-y|--yumdistro)   <specify yum distro> e.g.: centos/7, default: all"
+    echo "--production)     Apply on production"
+    echo "-v|--verbose)     Ve verbose"
     exit 0
 }
 while [ $# -gt 0 ]; do
@@ -61,6 +66,7 @@ while [ $# -gt 0 ]; do
     -d|--distro)           DISTROS=${2} ; YUM_DISTROS="";       shift ;;
     -y|--yumdistro)        YUM_DISTROS=${2} ; DISTROS="";       shift ;;
     --production)           R_BASE="/var/www";                  shift ;;
+    -v|--verbose)           VERBOSE="true"                            ;;
     esac
     shift
 done
@@ -120,6 +126,9 @@ IFS="____"
 IFS=$ORIG_IFS
 for d in $DISTROS ; do
     echo -n "$d: create-remote..."
+    [ -z ${VERBOSE} ] || {
+        echo -e "\n ssh $REMOTE "
+    }
     ssh $REMOTE "
         cd $R_BASE/$d
 
@@ -162,12 +171,18 @@ IFS=$ORIG_IFS
 
 for d in $YUM_DISTROS; do
     echo -n "$d: sign rpms..."
+    [ -z ${VERBOSE} ] || {
+        echo -e "\n ssh ${RPM_SIGN_USER}@${REMOTE_HOST} "
+    }
     ssh -R /run/user/${RPM_SIGN_UID}/gnupg/S.gpg-agent:/run/user/${UID}/gnupg/S.gpg-agent.extra \
         ${RPM_SIGN_USER}@${REMOTE_HOST} "
         rpmsign --addsign ${R_BASE}/${d}/*rpm > /dev/null 2>&1 || echo \"Error signing rpms in ${d}\"
         "
 
     echo -n " create-remote..."
+    [ -z ${VERBOSE} ] || {
+        echo -e "\n ssh $REMOTE "
+    }
     ssh ${REMOTE} "
         /usr/bin/createrepo_c --database ${R_BASE}/${d} > /dev/null || echo \"error with yum ssh\"
         "
