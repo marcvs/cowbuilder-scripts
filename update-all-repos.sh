@@ -64,16 +64,19 @@ while [ $# -gt 0 ]; do
     -h|--help)          usage               exit 0                    ;;
     -d|--distro)           DISTROS=${2} ; YUM_DISTROS="";       shift ;;
     -y|--yumdistro)        YUM_DISTROS=${2} ; DISTROS="";       shift ;;
-    --production)           R_BASE="/var/www";                  shift ;;
+    --production)           R_BASE="/var/www"                         ;;
     -v|--verbose)           VERBOSE="true"                            ;;
     esac
     shift
 done
 
+echo RBASE: $R_BASE
 
-[ x$R_BASE=="x/var/www/staging" ] && {
+
+[ "x${R_BASE}" == "x/var/www/staging" ] && {
     echo -e "\nWorking on STAGING environment. (Use --production to work on production)\n\n"
 }
+exit 0
 
 echo "DEB_DISTROS:"
 for i in ${DISTROS}; do
@@ -105,7 +108,8 @@ test -e $STYLE_FILE && {
 
 # Only for real repo:
 #echo "pandoc -f gfm -t html $MD_INPUT_FILE   >> $OUTPUT_FILE"
-[ x$R_BASE=="x/var/www/staging" ] || {
+[ "x${R_BASE}" == "x/var/www/staging" ] || {
+    echo "Updating the repo readme"
     pandoc -f gfm -t html $MD_INPUT_FILE >> $OUTPUT_FILE
     scp $OUTPUT_FILE $REMOTE:/$R_BASE/ > /dev/null || echo "error with ssh"
 
@@ -159,12 +163,12 @@ IFS=$ORIG_IFS
 # - After signing the rpms are owned by root, so we chown them back to the
 #   correct ${RPM_SIGN_USER}
 
-[ x$R_BASE=="x/var/www/staging" ] || {
+[ "x${R_BASE}" == "x/var/www/staging" ] || {
     RPM_SIGN_USER=${BUILD_USER}
     RPM_SIGN_UID=${BUILD_UID}
     #RPM_SIGN_UID=0
 }
-[ x$R_BASE=="x/var/www/staging" ] && {
+[ "x${R_BASE}" == "x/var/www/staging" ] && {
     RPM_SIGN_USER=${CICD_USER}
     RPM_SIGN_UID=${CICD_UID}
     RPM_SIGN_UID=0
