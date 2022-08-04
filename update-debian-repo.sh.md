@@ -76,7 +76,7 @@ In that case just use the second one.
 
 
 ## RPM Packages
-To use it, [this](https://repo.data.kit.edu/repo-data-kit-edu-key.gpg) signing key is used: 
+<!--To use it, [this](https://repo.data.kit.edu/repo-data-kit-edu-key.gpg) signing key is used: -->
 
 - [Centos 8](https://repo.data.kit.edu/centos/centos8):
     - Create a [file](https://repo.data.kit.edu/data-kit-edu-centos8.repo) with this content in `/etc/yum.repos.d`:
@@ -105,6 +105,10 @@ To use it, [this](https://repo.data.kit.edu/repo-data-kit-edu-key.gpg) signing k
         ```
         cd /etc/yum.repos.d; wget https://repo.data.kit.edu/data-kit-edu-rockylinux8.repo
         ```
+Then you can install with 
+```
+    yum install oidc-agent
+```
 
 - [Suse tumbleweed](https://repo.data.kit.edu/opensuse/tumbleweed)
 - [Suse leap 15.2](https://repo.data.kit.edu/opensuse/15.2)
