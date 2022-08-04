@@ -70,13 +70,11 @@ while [ $# -gt 0 ]; do
     shift
 done
 
-echo RBASE: $R_BASE
 
 
 [ "x${R_BASE}" == "x/var/www/staging" ] && {
     echo -e "\nWorking on STAGING environment. (Use --production to work on production)\n\n"
 }
-exit 0
 
 echo "DEB_DISTROS:"
 for i in ${DISTROS}; do

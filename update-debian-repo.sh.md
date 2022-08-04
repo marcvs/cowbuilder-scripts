@@ -4,11 +4,11 @@ This repository provides debian packages for **deb** and **rpm** based
 distributions.
 
 ## Install
-### Debian
+#### Debian
 ```
     apt-get install oidc-agent
 ```
-### RPM
+#### RPM
 ```
     yum install oidc-agent
 ```
