@@ -1,18 +1,3 @@
-# Packages
-
-This repository provides debian packages for **deb** and **rpm** based
-distributions.
-
-## Install
-#### Debian
-```
-    apt-get install oidc-agent
-```
-#### RPM
-```
-    yum install oidc-agent
-```
-
 # Repositories
 To use apt or yum, you need to enable the repository for your linux
 distribution:
